@@ -1,33 +1,34 @@
-<CsoundSynthesizer>
-<CsOptions>
-</CsOptions>
-<CsInstruments>
+;***************************************************
+; FM feedback instrument, regular oscillator
+;***************************************************
+; Oeyvind Brandtsegg 2024
+; obrandts@gmail.com
 
   sr = 48000
-  ksmps = 1
-  nchnls = 2
+  ksmps = 10
+  nchnls = 1
   0dbfs = 1
 
-;***************************************************
-; FM instrument, simple
-;***************************************************
 instr 1
 
   iamp = ampdbfs(p4)
   icps = p5
-  kmodindex line 0, p3, p6
-  kfeed_delay = 0.75 ; feedback delay time (phase synced)
-  klpfilterfq = 21000; bypass filter if cutoff above 20k
-  khpfilterfq = 0 ; bypass filter if cutoff lower than 0.1
-  iam_stabilizer = 1 ; switch for AM in feedback
+  imodindex_start = p6
+  imodindex_end = p7
+  print iamp, icps, imodindex_start, imodindex_end
+  kmodindex line imodindex_start, p3, imodindex_end
+  kfeed_delay = p8 ; feedback delay time (phase synced)
+  klpfilterfq = p9; bypass filter if cutoff above 20k
+  khpfilterfq = p10 ; bypass filter if cutoff lower than 0.1
+  iam_stabilizer = p11 ; switch for AM in feedback
    
- ; FM
+  ; FM
   amod init 0 ; init feedback signal
   amod = icps+(amod*kmodindex)
   acar oscili 1, amod
   amod_ = acar ; route output to feedback
 
-; filtering of feedback signal
+  ; filtering of feedback signal
   klp_delay_compensate = 0
   khp_delay_compensate = 0
   if klpfilterfq < 20000 then
@@ -48,23 +49,13 @@ instr 1
     amod = amod_*icps
   endif
 
-; feedback delay adjustment 
-; sync delay to to pitch cycle (phase sync)
-; compensate for delay introduced by the filters 
+  ; feedback delay adjustment 
+  ; sync delay to to pitch cycle (phase sync)
+  ; compensate for delay introduced by the filters and for the ksmps delay in the feedback
   kfeed_delay_ limit (kfeed_delay*(1/icps))-(1/kr)+khp_delay_compensate+klp_delay_compensate, 0, 1 
   amod vdelayx amod, a(kfeed_delay_), 1, 4 
   
-; audio out
- outs acar*iamp, acar*iamp
+  ; audio out
+  out acar*iamp
 endin
 
-</CsInstruments>
-<CsScore>
-
-;         amp  cps  mod 
-i1  0  3  -7   400  1.5
-i1  ^+4  3  .  100 .
-e
-
-</CsScore>
-</CsoundSynthesizer>

@@ -13,9 +13,7 @@ if len(sys.argv) > 2:
 
 fftsize = 8192
 sr1,sig1 = wavfile.read(f1)
-sig1 = sig1[:,0] # left channel of stereo file
 sr2,sig2 = wavfile.read(f2)
-sig2 = sig2[:,0] # left channel of stereo file
 
 N = 8192
 start_seconds = 2 # set position in file, in seconds
