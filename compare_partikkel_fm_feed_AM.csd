@@ -28,7 +28,7 @@
   kfeed_delay = 0.75 ; feedback delay time (phase synced)
   klpfilterfq = 21000; bypass filter if cutoff above 20k
   khpfilterfq = 0 ; bypass filter if cutoff lower than 0.1
-  iam_stabilizer = 0 ; switch for AM in feedback
+  iam_stabilizer = 1 ; switch for AM in feedback
   
 ; grain dur and  shape
   kduration	= (kgraindur*1000)/kgrainrate ; grain dur in milliseconds, relative to grain rate

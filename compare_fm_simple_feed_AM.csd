@@ -19,7 +19,7 @@ instr 1
   kfeed_delay = 0.75 ; feedback delay time (phase synced)
   klpfilterfq = 21000; bypass filter if cutoff above 20k
   khpfilterfq = 0 ; bypass filter if cutoff lower than 0.1
-  iam_stabilizer = 0 ; switch for AM in feedback
+  iam_stabilizer = 1 ; switch for AM in feedback
    
  ; FM
   amod init 0 ; init feedback signal
