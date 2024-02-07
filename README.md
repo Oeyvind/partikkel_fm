@@ -1,10 +1,11 @@
 Examples of fm feedback in granular synthesis, comparing it to simple fm feedback with regular oscillators
 
 To run synthesis of the two types of fm feedback run:
-python generate_and_compare.py
+python generate_and_compare.py soundfilename
+The first argument sets the initial file name of the generated sound file (appended differently for the two different synthesis models)
 
 Synthesis parameters can be set from the python command, for example like:
-python generate_and_compare.py hpfq=1
+python generate_and_compare.py soundfile hpfq=1
 ... which will enable the hipass filter in the fm feedback signal and use a filter cutoff of 1Hz
 
 The default values are:
