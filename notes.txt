@@ -1,0 +1,11 @@
+* todo
+
+
+* make examples that compare simple and partikkel fm with
+    - static fm index and:
+	- AM, hipass, lopass in the feedback loop
+	- changing delay time in the feedback loop
+	- changing grain duration
+	- changing grain pitch
+
+* python script to run 2 csds and then run spectrogram display comparison of those two generated wav files
