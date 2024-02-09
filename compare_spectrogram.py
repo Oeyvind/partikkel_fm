@@ -12,7 +12,8 @@ from scipy.io import wavfile
 
 f1 = sys.argv[1]
 f2 = sys.argv[2]
-nondefaults = ' '.join(sys.argv[3:])
+maxfreq = int(sys.argv[3])
+nondefaults = ' '.join(sys.argv[4:])
 
 fftsize = 8192
 sr1,sig1 = wavfile.read(f1)
@@ -21,8 +22,8 @@ fig, axs = plt.subplots(2, figsize=(10,7))
 axs[0].specgram(sig1, Fs=sr1, NFFT=fftsize, vmin=-8)
 axs[1].specgram(sig2, Fs=sr2, NFFT=fftsize, vmin=-8)
 
-axs[0].set_ylim(0,5000)
-axs[1].set_ylim(0,5000)
+axs[0].set_ylim(0,maxfreq)
+axs[1].set_ylim(0,maxfreq)
 axs[0].set_title(f1)
 axs[0].set_xlabel('\n\nnondefault parms: '+nondefaults)
 axs[1].set_title(f2)
