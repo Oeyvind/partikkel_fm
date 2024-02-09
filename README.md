@@ -27,4 +27,14 @@ The default values are:
 
 The index_map setting attempts to take into account that the grain duration naturally will affect the amount of modulation that can occur in granular fm feedback. 
 
+To Victor, things to test:
+
+python generate_and_compare.py 1 delay=0.75 gr.pitch=800 cps=800 index_map=1
+- here we see more clearly how the different sidebands enter. We seem to get sidebands at cps/2, then cps/4 ?
+
+python generate_and_compare.py 1 delay=0.25 mod2=3
+- here we see a good example of sidebands getting chaotic in granular, then coming back into order (an octave above)
+
+python generate_and_compare.py 1 delay=1.5
+- here we see the sub-cps sidebands more cleary in simple fm feedback
 
