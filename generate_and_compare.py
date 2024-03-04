@@ -17,11 +17,12 @@ defaults["delay"] = 0
 defaults["lpfq"] = 21000
 defaults["hpfq"] = 0
 defaults["am"] = 0
-defaults["gr.pitch"] = 400  
+defaults["gr.pitch"] = 400
 defaults["gr.dur"] = 1.5
 defaults["adratio"] = 0.5
 defaults["sustain"] = 0.33
 defaults["index_map"] = 0
+defaults["inv_phase2"] = 0
 maxfreq = 5000
 
 # command line override
