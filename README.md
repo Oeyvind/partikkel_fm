@@ -23,6 +23,7 @@ The default values are:
 ["adratio"] = 0.5 # attack to decay ratio for envelope on each grain (for granular only)
 ["sustain"] = 0.33 # sustain of envelope for each grain (for granular only)
 ["index_map"] = 0 # enable fm modulation index adjustment for the granular model (experimental)
+["inv_phase2"] = 0 # if enabled, we invert the phase of every second grain and double the grain rate, as a variant of bipolar AM
 ["maxfreq] = 5000 # the maximum frequency to display in the spectrum plot
 
 The index_map setting attempts to take into account that the grain duration naturally will affect the amount of modulation that can occur in granular fm feedback. 
