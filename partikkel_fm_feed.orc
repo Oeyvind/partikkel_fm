@@ -37,7 +37,7 @@ instr 1
 
   ; index adjustment for granular FM, to attempt to keep the same modulation amount as we get in regular FM feedback
   if kindex_mapping == 1 then
-    kmodindex = ((kmodindex)^1.8)*1/(kgraindur^0.8) ; empirical adjust mod index for these partikkelsettings
+    kmodindex = ((kmodindex)^1.8)/(kgraindur^0.7) ; empirical adjust mod index for these partikkelsettings
   endif
   ; always adjust amp slightly according to grain duration, as grain overlaps increase output amp
   kamp = iamp*limit(1/(kgraindur^0.5), 0.1, 4) ; empirical adjust amp for these partikkelsettings

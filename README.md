@@ -3,6 +3,7 @@ Examples of fm feedback in granular synthesis, comparing it to simple fm feedbac
 To run synthesis of the two types of fm feedback run:
 python generate_and_compare.py soundfilename
 The first argument sets the initial file name of the generated sound file (appended differently for the two different synthesis models)
+The script will display a spectrogram of both generated sound files, and also a zoomed in audio waveform snippet at regular time intervals (0.5 seconds by default).
 
 Synthesis parameters can be set from the python command, for example like:
 python generate_and_compare.py soundfile hpfq=1

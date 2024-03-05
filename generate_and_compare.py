@@ -60,5 +60,5 @@ partikkelfile = sys.argv[1]+'_partikl.wav'
 
 err1 = subprocess.run('csound partikkel_fm_feed.orc score_partikkel.sco -o{}'.format(partikkelfile))
 err2 = subprocess.run('csound fm_simple_feed.orc score_fm.sco -o{}'.format(fmfile))
-err3 = subprocess.run('python compare_spectrogram.py {} {} {} {}'.format(partikkelfile, fmfile, maxfreq, ' '.join(sys.argv[2:])))
+err3 = subprocess.run('python compare_spectrogram_and_waveform.py {} {} {} {} {}'.format(partikkelfile, fmfile, maxfreq, defaults["cps"], ' '.join(sys.argv[2:])))
 print('completed: \n', err1, '\n', err2, '\n', err3)
