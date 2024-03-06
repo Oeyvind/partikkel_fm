@@ -32,8 +32,8 @@ instr 1
   ka_d_ratio = p14 ; attack time (relative) for each grain
   ksustain_amount = p15 ; sustain time (relative) in each grain
   kindex_mapping = p16 ; apply index adjustment formula 
-  kinvphase2 = p17
-  kgrainrate = kinvphase2 > 0 ? p5*2 : kgrainrate
+  kinvphase2 = p17 ; invert phase of every 2nd grain
+  kgrainrate = kinvphase2 > 0 ? p5*2 : kgrainrate; and souble the grain rate when using phase inversion of every 2nd grain
 
   ; index adjustment for granular FM, to attempt to keep the same modulation amount as we get in regular FM feedback
   if kindex_mapping == 1 then

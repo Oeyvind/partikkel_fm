@@ -24,15 +24,10 @@
 % \usepackage{url}
 \usepackage{hyperref}
 \hypersetup{hidelinks}
+\usepackage{listings}
+%\usepackage{float}
+%\restylefloat{figure, lstlisting} 
 
-\usepackage{tikz}
-\usetikzlibrary{shapes, arrows, bending, positioning}
-
-\tikzstyle{process} = [rectangle, rounded corners, minimum width=3cm, minimum height=0.8cm, text centered, draw=black, fill=red!30]
-\tikzstyle{data}=[trapezium, draw=black, text centered, trapezium left angle=60, trapezium right angle=120, minimum height=2em,fill=orange!30]
-\tikzstyle{container}=[rectangle, rounded corners = 0.5cm, draw=black, fill=green!30, text centered, text depth = 3cm, minimum width=4.5cm, minimum height=3.7cm]
-\tikzstyle{container2}=[rectangle, rounded corners = 0.5cm, draw=black, fill=green!30, text centered, text depth = 8.7cm, minimum width=7.5cm, minimum height=9.7cm]
-\tikzstyle{decision}=[diamond, draw=black, fill=yellow!30, text centered]
 
 \newcommand{\keywords}[1]{\par\addvspace\baselineskip
 \noindent\keywordname\enspace\ignorespaces#1}
@@ -87,20 +82,49 @@ In granular synthesis, the perceived pitch is constituted by the grain rate (ref
 
 FM feedback with simple oscillators will in its simplest form induce pitch drift, as the output waveform modulate the frequency of the oscillator. This pitch drift can be partly counteracted by recent developments in FM theory (\cite{Lazzarini-2024}), but as this involves an extra step of processing, we don't use it for the simplest possible comparison setup. We will use it as parametric variation when we explore being the simplest possible comparison. The pitch drift can also partly be neutralized by adjusting the phase of the feedback modulator. In feedback modulation, adjusting the phase can be done by introducing a small delay in the feedback signal chain. In audio processing the smallest possible feedback delay is 1 sample, so there is inevitably a delay in the feedback in any case. Also, the adjustment of phase of oscillators can be seen as already existing in the simple FM oscillator configuration. Even if it for us will include an extra processing step (the delay), we consider it to be not more complex than an oscillator with phase control. The delay time is adjusted with respect to the fundamental frequency, so we could call is a phase synced delay. For this reason, delay times are given in fractions of a cycle of the fundamental frequency. 
 
-... simplest example, figure, comparison, parameter values
+In our first example we will try to set the parameters so that we get a similar, or comparable, sound from both synthesis models. The example uses an increasing modulation index over time. As can be seen in \ref{fig:simplest}, the sidebands show a similar evolution over time. The first sidebands (over the first 1.5 seconds) appear slightly earlier in the oscillator model, but the break to subharmonics (octaviaton) occurs earlier in the granular model (at 1.7 seconds, similarly at 2.7 seconds in the oscillator model). The transition to chaotic behavior occurs almost simultaneously in both models (around 3.5 second). The synthesis models use a set of default parameters listed in \ref{lst:defaultparameters}, parameter settings deviating from the default setting are listed directly in the figure as nondefault parameters (in between the plots for the granular and oscillator models). The plots show a spectrogram and also zoomed-in snapshots of the waveform at selected locations. The waveform display shows 4 cycles of the waveform in each snapshot, with snapshots being taken every 0.5 seconds of the sound.
+
 \begin{figure}
 	\centering
 	\includegraphics[width=.95\textwidth]{simplest_comparison.png}
-	\caption{caption text}
+	\caption{Creating a similar FM feedback sound with the oscillator model and granular model}
 	\label{fig:simplest}
 \end{figure}
+
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption=Default parameters for the synthesis models, label=lst:defaultparameters]
+"dur" = 4 # duration of the generated sound
+"amp" = -6 # overall amplitude
+"cps" = 400 # fundamental frequency 
+"mod1" = 0 # modulation index at start of sound
+"mod2" = 1.5 # modulation index at end of sound
+"delay" = 0 # phase delay for the feedback modulator
+"lpfq" = 21000 # lowpass filter frequency for the feedback modulator 
+"hpfq" = 0 #high pass filter frequency for the feedback modulator 
+"am" = 0 # enable amplitude modulation on the feedback modulator
+"gr.pitch" = 400 # grain frequency 
+"gr.dur" = 1.5 # grain duration relative to grain rate
+"adratio" = 0.5 # attack to decay ratio of the grain envelope
+"sustain" = 0.33 # sustain length for the grain envelope
+"index_map" = 0 # modulation index scaling relative to grain duration
+"inv_phase2" = 0 # invert the phase of every second grain
+maxfreq = 5000 # maximum frequency for the displayed spectrogram
+\end{lstlisting}
+\emph{Comments to the default parameters
+	fundamental frequency (= grain rate for the granular model)
+	amplitude modulation on the feedback modulator
+	(bypass filter if > 20000)
+	(bypass filter if < 0.1)
+	(valid only for the granular model(), as are the next 5 parameters)
+	also doubles the effective grain rate}
+\end{minipage}
 
 
 \section{Running the provided code examples}
 The code examples for this paper can be found in a github repository at \url{https://github.com/Oeyvind/partikkel_fm}. There are Csound orchestra files for FM with granular synthesis and with regular oscillators. To compare the two techniques, it is useful to run both with the same set of parameters (adding only a few extra parameters for granular synthesis), and then compare the generated sound files. The repo contains python files to write score files and render sound with both techniques. This will also display spectrograms for the two generated sound files. The Python files contain default parameter settings as a starting point, and allow parameter modification via command line arguments. For example:
-\begin{verbatim}
-python generate_and_compare.py soundfilename cps=200
-\end{verbatim}
+\begin{lstlisting}
+python generate_and_compare.py soundfilename cps=200 gr.rate=200
+\end{lstlisting}
 will modify the fundamental frequency (cps) by setting it to 200Hz, then render sound with both synthesis techniques and display spectrograms for both generated sound files. 
 
 \section{Conclusion}
