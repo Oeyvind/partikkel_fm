@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.4)  4 MAR 2024 20:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.4)  6 MAR 2024 11:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -834,35 +834,43 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 [1
 
 
-{C:/Users/Oeyvind/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2]
-(granular_fm_feedback_2024.aux)
+{C:/Users/Oeyvind/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
+<simplest_comparison.png, id=44, 722.7pt x 505.89pt>
+File: simplest_comparison.png Graphic file (type png)
+<use simplest_comparison.png>
+Package pdftex.def Info: simplest_comparison.png  used on input line 93.
+(pdftex.def)             Requested size: 329.7663pt x 230.83644pt.
+ [2]
+[3 <./simplest_comparison.png>] [4] (granular_fm_feedback_2024.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `granular_fm_feedback_2024.out' has not chang
 ed.
-(rerunfilecheck)             Checksum: B4E530BAF94FEE2D970F8E2970B13216;795.
+(rerunfilecheck)             Checksum: 1797A59400086C6B22B702679DF7B8B2;1127.
  ) 
 Here is how much of TeX's memory you used:
- 22265 strings out of 474457
- 445599 string characters out of 5741811
- 1936190 words of memory out of 5000000
- 44195 multiletter control sequences out of 15000+600000
- 565068 words of font info for 64 fonts, out of 8000000 for 9000
+ 22285 strings out of 474457
+ 445990 string characters out of 5741811
+ 1935190 words of memory out of 5000000
+ 44209 multiletter control sequences out of 15000+600000
+ 565376 words of font info for 65 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,6n,93p,776b,590s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,7n,93p,1500b,591s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/c
-m/cmbx12.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public
-/amsfonts/cm/cmbx9.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/ty
-pe1/public/amsfonts/cm/cmr10.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTe
-X/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/Oeyvind/AppData/Local/Progr
-ams/MiKTeX/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Users/Oeyvind/AppData/L
-ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/Oeyvin
-d/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on granular_fm_feedback_2024.pdf (2 pages, 119276 bytes).
+m/cmbx10.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public
+/amsfonts/cm/cmbx12.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/t
+ype1/public/amsfonts/cm/cmbx9.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKT
+eX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Oeyvind/AppData/Local/Pro
+grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/Oeyvind/AppData/
+Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Users/Oeyvin
+d/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/U
+sers/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt9
+.pfb>
+Output written on granular_fm_feedback_2024.pdf (4 pages, 229707 bytes).
 PDF statistics:
- 84 PDF objects out of 1000 (max. 8388607)
- 13 named destinations out of 1000 (max. 500000)
- 45 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 111 PDF objects out of 1000 (max. 8388607)
+ 18 named destinations out of 1000 (max. 500000)
+ 66 words of extra memory for PDF output out of 10000 (max. 10000000)
 
