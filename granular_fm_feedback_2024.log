@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.4)  6 MAR 2024 21:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.4)  8 MAR 2024 13:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -437,10 +437,10 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 Underfull \vbox (badness 5105) has occurred while \output is active []
 
  [2]
-<simplest_comparison.png, id=49, 722.7pt x 505.89pt>
-File: simplest_comparison.png Graphic file (type png)
-<use simplest_comparison.png>
-Package pdftex.def Info: simplest_comparison.png  used on input line 89.
+<ex1_compare.png, id=50, 722.7pt x 505.89pt>
+File: ex1_compare.png Graphic file (type png)
+<use ex1_compare.png>
+Package pdftex.def Info: ex1_compare.png  used on input line 89.
 (pdftex.def)             Requested size: 329.7663pt x 230.83644pt.
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
 nput line 95.
@@ -477,7 +477,7 @@ Overfull \hbox (36.88037pt too wide) in paragraph at lines 111--112
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [3 <./simplest_comparison.png>]
+ [3 <./ex1_compare.png>]
 Overfull \hbox (36.88037pt too wide) in paragraph at lines 126--127
 [][][][][][][][][][][][][][][][][][] 
  []
@@ -492,11 +492,11 @@ ed.
 (rerunfilecheck)             Checksum: 1797A59400086C6B22B702679DF7B8B2;1127.
  ) 
 Here is how much of TeX's memory you used:
- 11006 strings out of 474457
- 167077 string characters out of 5741811
+ 11008 strings out of 474457
+ 167040 string characters out of 5741811
  1966190 words of memory out of 5000000
- 33169 multiletter control sequences out of 15000+600000
- 566057 words of font info for 67 fonts, out of 8000000 for 9000
+ 33170 multiletter control sequences out of 15000+600000
+ 566416 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,6n,79p,1500b,1099s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Oeyvind\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tc
@@ -504,16 +504,17 @@ rm1000.pk><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
 sfonts/cm/cmbx10.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type
 1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX
 /fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/Oeyvind/AppData/Local/Progr
-ams/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Oeyvind/AppData/L
-ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/Oeyvind/
-AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Use
-rs/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti9.p
-fb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/
-cm/cmtt10.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/publi
-c/amsfonts/cm/cmtt9.pfb>
-Output written on granular_fm_feedback_2024.pdf (5 pages, 254938 bytes).
+ams/MiKTeX/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><C:/Users/Oeyvind/AppDat
+a/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Oeyv
+ind/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/U
+sers/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti1
+0.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
+ts/cm/cmti9.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/pub
+lic/amsfonts/cm/cmtt10.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/font
+s/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on granular_fm_feedback_2024.pdf (5 pages, 263854 bytes).
 PDF statistics:
- 149 PDF objects out of 1000 (max. 8388607)
+ 154 PDF objects out of 1000 (max. 8388607)
  38 named destinations out of 1000 (max. 500000)
  54 words of extra memory for PDF output out of 10000 (max. 10000000)
 

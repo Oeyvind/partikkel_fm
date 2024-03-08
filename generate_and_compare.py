@@ -33,32 +33,32 @@ for a in sys.argv[2:]:
   else:
     defaults[a2[0]] = a2[1]
 
+partikkelwav = sys.argv[1]+'_partikl.wav'
+partikkelscore = sys.argv[1]+'score_partikl.sco'
+partikkelscorefile = open(partikkelscore, "w")
+partikkelscorefile.write('i1 0 ')
 
-partikkelscore = open("score_partikkel.sco", "w")
-partikkelscore.write('i1 0 ')
-fmscore = open("score_fm.sco", "w")
-fmscore.write('i1 0 ')
+fmwav = sys.argv[1]+'_fm.wav'
+fmscore = sys.argv[1]+'score_fm.sco'
+fmscorefile = open(fmscore, "w")
+fmscorefile.write('i1 0 ')
 
 p = 2 # keep track of p-fields as the two scores differ
 for key,value in defaults.items():
   print(key, value)
   p += 1
   if p <= 11: 
-    partikkelscore.write('{} '.format(value))
-    fmscore.write('{} '.format(value))
+    partikkelscorefile.write('{} '.format(value))
+    fmscorefile.write('{} '.format(value))
   else:
-    partikkelscore.write('{} '.format(value))
+    partikkelscorefile.write('{} '.format(value))
 
-partikkelscore.close()
-fmscore.close()
-
+partikkelscorefile.close()
+fmscorefile.close()
 
 print(' '.join(sys.argv[2:]))
 
-fmfile = sys.argv[1]+'_fm.wav'
-partikkelfile = sys.argv[1]+'_partikl.wav'
-
-err1 = subprocess.run('csound partikkel_fm_feed.orc score_partikkel.sco -o{}'.format(partikkelfile))
-err2 = subprocess.run('csound fm_simple_feed.orc score_fm.sco -o{}'.format(fmfile))
-err3 = subprocess.run('python compare_spectrogram_and_waveform.py {} {} {} {} {}'.format(partikkelfile, fmfile, maxfreq, defaults["cps"], ' '.join(sys.argv[2:])))
+err1 = subprocess.run('csound partikkel_fm_feed.orc {} -o{}'.format(partikkelscore, partikkelwav))
+err2 = subprocess.run('csound fm_simple_feed.orc {} -o{}'.format(fmscore, fmwav))
+err3 = subprocess.run('python compare_spectrogram_and_waveform.py {} {} {} {} {} {}'.format(sys.argv[1], partikkelwav, fmwav, maxfreq, defaults["cps"], ' '.join(sys.argv[2:])))
 print('completed: \n', err1, '\n', err2, '\n', err3)

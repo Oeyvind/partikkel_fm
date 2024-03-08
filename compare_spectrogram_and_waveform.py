@@ -10,11 +10,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 
-f1 = sys.argv[1]
-f2 = sys.argv[2]
-maxfreq = int(sys.argv[3])
-basefreq = int(sys.argv[4])
-nondefaults = ' '.join(sys.argv[5:])
+basefilename = sys.argv[1]
+f1 = sys.argv[2]
+f2 = sys.argv[3]
+maxfreq = int(sys.argv[4])
+basefreq = int(sys.argv[5])
+nondefaults = ' '.join(sys.argv[6:])
 
 fftsize = 8192
 sr1,sig1 = wavfile.read(f1)
@@ -63,7 +64,8 @@ axs[2].annotate('nondefault parms: '+nondefaults, (0,0))
 axs[0].set_title(f1)
 axs[3].set_title(f2)
 plt.tight_layout()
+plt.savefig(basefilename+'_compare.png')
 plt.show()
-#pylab.savefig('spectrogram.png')
+
 
 
