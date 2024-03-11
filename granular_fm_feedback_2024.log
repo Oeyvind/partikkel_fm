@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.4)  8 MAR 2024 15:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.4)  11 MAR 2024 16:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -433,84 +433,94 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 [1
 
 
-{C:/Users/Oeyvind/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
-Underfull \vbox (badness 5105) has occurred while \output is active []
-
- [2]
-<ex1_compare.png, id=50, 722.7pt x 505.89pt>
+{C:/Users/Oeyvind/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2]
+<ex1_compare.png, id=72, 722.7pt x 505.89pt>
 File: ex1_compare.png Graphic file (type png)
 <use ex1_compare.png>
-Package pdftex.def Info: ex1_compare.png  used on input line 89.
+Package pdftex.def Info: ex1_compare.png  used on input line 90.
 (pdftex.def)             Requested size: 329.7663pt x 230.83644pt.
-<ex2_compare.png, id=55, 722.7pt x 505.89pt>
+
+[3 <./ex1_compare.png>]
+<ex2_compare.png, id=81, 722.7pt x 505.89pt>
 File: ex2_compare.png Graphic file (type png)
 <use ex2_compare.png>
-Package pdftex.def Info: ex2_compare.png  used on input line 98.
+Package pdftex.def Info: ex2_compare.png  used on input line 99.
 (pdftex.def)             Requested size: 329.7663pt x 230.83644pt.
 
 Underfull \vbox (badness 3281) has occurred while \output is active []
 
- [3 <./ex1_compare.png>]
-<ex3_compare.png, id=64, 722.7pt x 505.89pt>
+ [4 <./ex2_compare.png>]
+<ex3_compare.png, id=93, 722.7pt x 505.89pt>
 File: ex3_compare.png Graphic file (type png)
 <use ex3_compare.png>
-Package pdftex.def Info: ex3_compare.png  used on input line 107.
+Package pdftex.def Info: ex3_compare.png  used on input line 111.
 (pdftex.def)             Requested size: 329.7663pt x 230.83644pt.
- [4 <./ex2_compare.png>]
-<ex4_compare.png, id=74, 722.7pt x 505.89pt>
+<ex4_compare.png, id=96, 722.7pt x 505.89pt>
 File: ex4_compare.png Graphic file (type png)
 <use ex4_compare.png>
-Package pdftex.def Info: ex4_compare.png  used on input line 116.
+Package pdftex.def Info: ex4_compare.png  used on input line 120.
 (pdftex.def)             Requested size: 329.7663pt x 230.83644pt.
-
-Overfull \hbox (36.88037pt too wide) in paragraph at lines 124--125
+ [5 <./ex3_compare.png>]
+<ex5_compare.png, id=106, 722.7pt x 505.89pt>
+File: ex5_compare.png Graphic file (type png)
+<use ex5_compare.png>
+Package pdftex.def Info: ex5_compare.png  used on input line 129.
+(pdftex.def)             Requested size: 329.7663pt x 230.83644pt.
+ [6 <./ex4_compare.png>] [7 <./ex5_compare.png>]
+Overfull \hbox (6.88007pt too wide) in paragraph at lines 154--155
 [][][][][][][][][][][][][][][][][][] 
  []
 
-[5 <./ex3_compare.png>]
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 133.
 
-Overfull \hbox (0.88pt too wide) in paragraph at lines 140--141
+Underfull \hbox (badness 10000) in paragraph at lines 160--163
+
+ []
+
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
+nput line 170.
+
+Overfull \hbox (0.88pt too wide) in paragraph at lines 177--178
 [][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [6 <./ex4_compare.png>] [7] (granular_fm_feedback_2024.aux)
+ [8]
+[9] (granular_fm_feedback_2024.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `granular_fm_feedback_2024.out' has not chang
 ed.
-(rerunfilecheck)             Checksum: 1797A59400086C6B22B702679DF7B8B2;1127.
+(rerunfilecheck)             Checksum: 9E400E3EF0303447C24F10DF4988DC9F;2008.
  ) 
 Here is how much of TeX's memory you used:
- 11036 strings out of 474457
- 167552 string characters out of 5741811
- 1962190 words of memory out of 5000000
- 33194 multiletter control sequences out of 15000+600000
+ 11057 strings out of 474457
+ 167904 string characters out of 5741811
+ 1964190 words of memory out of 5000000
+ 33207 multiletter control sequences out of 15000+600000
  566416 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,7n,79p,1500b,1099s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,6n,79p,1527b,1102s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Oeyvind\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tc
 rm1000.pk><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
 sfonts/cm/cmbx10.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type
 1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX
 /fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/Oeyvind/AppData/Local/Progr
 ams/MiKTeX/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><C:/Users/Oeyvind/AppDat
-a/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Oeyv
-ind/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/U
-sers/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti1
-0.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
-ts/cm/cmti9.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/pub
-lic/amsfonts/cm/cmtt10.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/font
-s/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on granular_fm_feedback_2024.pdf (7 pages, 540793 bytes).
+a/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Oey
+vind/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:
+/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr
+9.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
+ts/cm/cmti10.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/pu
+blic/amsfonts/cm/cmti9.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/font
+s/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/Oeyvind/AppData/Local/Programs/
+MiKTeX/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on granular_fm_feedback_2024.pdf (9 pages, 737706 bytes).
 PDF statistics:
- 177 PDF objects out of 1000 (max. 8388607)
- 42 named destinations out of 1000 (max. 500000)
- 69 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 220 PDF objects out of 1000 (max. 8388607)
+ 50 named destinations out of 1000 (max. 500000)
+ 98 words of extra memory for PDF output out of 10000 (max. 10000000)
 
