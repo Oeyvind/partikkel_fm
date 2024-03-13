@@ -14,7 +14,7 @@ basefilename = sys.argv[1]
 f1 = sys.argv[2]
 f2 = sys.argv[3]
 maxfreq = int(sys.argv[4])
-basefreq = int(sys.argv[5])
+basefreq = float(sys.argv[5])
 nondefaults = ' '.join(sys.argv[6:])
 
 fftsize = 8192
