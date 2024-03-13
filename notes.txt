@@ -1,4 +1,19 @@
 * todo
 
-* add phase control to regular FM, to see what difference phase makes there
-* waveform display in single cycle zooms at regular intervals
+* notes for hig mod index, and focusing mainly on the granular model
+* relationship between cps and phase delay
+- seems like the magic phase spot changes with pitch, but not in linear proportions
+- there is a sweep spot for frequency/phase delay combinations, and it might be repeating in integer multiples of the cps
+* test more specifically to find where the sweet spots repeat (when we have harmonic splitting of sidebands rather than just going straight to chaos)
+
+* hipass cleans up much with the granular model
+* lowpass can also disturb where otherwise we might have order/harmonic sidebands. But can also rein in a slightly chaotic situation.
+* am stabilizes, but only until it doesn't
+
+* grain dur: lower grain dur stabilizes, but also creates upper sidebands from the start
+- it might stabilize to the point where the result is "just granular"
+* TRY: higher grain pitch with shorter grain duration, so that we manage to get at least a whole cycle of the waveform in each grain
+- beware of phase delay values that might put the modulation exactly between grains (effectively no modulation)
+
+* grain pitch: interesting variations, sometimes possible to get cleaner sidebands. Grain pitch does not neccessarily have to be integer transposition of grain rate
+- check theory from Springer Csound book, when grain pitch is not integer og grain rate (extra sidebands?)
