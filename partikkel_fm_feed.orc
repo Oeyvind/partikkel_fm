@@ -27,7 +27,7 @@ instr 1
   khpfilterfq = p10 ; bypass filter if cutoff lower than 0.1
   iam_stabilizer = p11 ; switch for AM in feedback
   ; extra parameters for the grain generator moved to the end of the p-fields, to keep the first p-fields the same in both orchestras
-  kgrainpitch = p12  
+  kgrainpitch = p12
   kgraindur = p13
   ka_d_ratio = p14 ; attack time (relative) for each grain
   ksustain_amount = p15 ; sustain time (relative) in each grain
