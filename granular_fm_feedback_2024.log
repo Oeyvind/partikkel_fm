@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.4)  11 MAR 2024 16:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.4)  13 MAY 2024 15:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -434,53 +434,72 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 
 {C:/Users/Oeyvind/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2]
-<ex1_compare.png, id=72, 722.7pt x 505.89pt>
+<ex1_compare.png, id=71, 722.7pt x 505.89pt>
 File: ex1_compare.png Graphic file (type png)
 <use ex1_compare.png>
 Package pdftex.def Info: ex1_compare.png  used on input line 90.
 (pdftex.def)             Requested size: 329.7663pt x 230.83644pt.
 
 [3 <./ex1_compare.png>]
-<ex2_compare.png, id=81, 722.7pt x 505.89pt>
+<ex2_compare.png, id=80, 722.7pt x 505.89pt>
 File: ex2_compare.png Graphic file (type png)
 <use ex2_compare.png>
 Package pdftex.def Info: ex2_compare.png  used on input line 99.
 (pdftex.def)             Requested size: 329.7663pt x 230.83644pt.
-
-Underfull \vbox (badness 3281) has occurred while \output is active []
-
  [4 <./ex2_compare.png>]
-<ex3_compare.png, id=93, 722.7pt x 505.89pt>
+<ex3_compare.png, id=92, 722.7pt x 505.89pt>
 File: ex3_compare.png Graphic file (type png)
 <use ex3_compare.png>
-Package pdftex.def Info: ex3_compare.png  used on input line 111.
+Package pdftex.def Info: ex3_compare.png  used on input line 110.
 (pdftex.def)             Requested size: 329.7663pt x 230.83644pt.
-<ex4_compare.png, id=96, 722.7pt x 505.89pt>
+<ex4_compare.png, id=95, 722.7pt x 505.89pt>
 File: ex4_compare.png Graphic file (type png)
 <use ex4_compare.png>
-Package pdftex.def Info: ex4_compare.png  used on input line 120.
+Package pdftex.def Info: ex4_compare.png  used on input line 119.
 (pdftex.def)             Requested size: 329.7663pt x 230.83644pt.
  [5 <./ex3_compare.png>]
-<ex5_compare.png, id=106, 722.7pt x 505.89pt>
+<ex5_compare.png, id=105, 722.7pt x 505.89pt>
 File: ex5_compare.png Graphic file (type png)
 <use ex5_compare.png>
-Package pdftex.def Info: ex5_compare.png  used on input line 129.
+Package pdftex.def Info: ex5_compare.png  used on input line 128.
 (pdftex.def)             Requested size: 329.7663pt x 230.83644pt.
- [6 <./ex4_compare.png>] [7 <./ex5_compare.png>]
-Overfull \hbox (6.88007pt too wide) in paragraph at lines 154--155
+
+[6 <./ex4_compare.png>]
+Overfull \hbox (6.88007pt too wide) in paragraph at lines 140--141
 [][][][][][][][][][][][][][][][][][] 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 160--163
-
+[7 <./ex5_compare.png>]
+Underfull \hbox (badness 3861) in paragraph at lines 157--158
+\OT1/cmr/m/it/9 Fre-quency Mod-u-la-tion Syn-the-sis. \OT1/cmr/m/n/9 Jour-nal o
+f New Mu-sic Re-search, 1{16.
  []
 
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 170.
+nput line 175.
 
-Overfull \hbox (0.88pt too wide) in paragraph at lines 177--178
-[][][][][][][][][][][][][][][][][][][][][][][][] 
+Overfull \hbox (12.88013pt too wide) in paragraph at lines 182--183
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (6.88007pt too wide) in paragraph at lines 187--188
+[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (0.88pt too wide) in paragraph at lines 188--189
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (6.88007pt too wide) in paragraph at lines 189--190
+[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (6.88007pt too wide) in paragraph at lines 190--191
+[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
@@ -494,16 +513,16 @@ L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `granular_fm_feedback_2024.out' has not chang
 ed.
-(rerunfilecheck)             Checksum: 9E400E3EF0303447C24F10DF4988DC9F;2008.
+(rerunfilecheck)             Checksum: 748039808214282835BC1CD9230CE00D;1593.
  ) 
 Here is how much of TeX's memory you used:
  11057 strings out of 474457
- 167904 string characters out of 5741811
- 1964190 words of memory out of 5000000
+ 167899 string characters out of 5741811
+ 1960190 words of memory out of 5000000
  33207 multiletter control sequences out of 15000+600000
  566416 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,6n,79p,1527b,1102s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,7n,79p,1809b,1099s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Oeyvind\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tc
 rm1000.pk><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
 sfonts/cm/cmbx10.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type
@@ -518,9 +537,9 @@ ts/cm/cmti10.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/fonts/type1/pu
 blic/amsfonts/cm/cmti9.pfb><C:/Users/Oeyvind/AppData/Local/Programs/MiKTeX/font
 s/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/Oeyvind/AppData/Local/Programs/
 MiKTeX/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on granular_fm_feedback_2024.pdf (9 pages, 737706 bytes).
+Output written on granular_fm_feedback_2024.pdf (9 pages, 738730 bytes).
 PDF statistics:
- 220 PDF objects out of 1000 (max. 8388607)
+ 219 PDF objects out of 1000 (max. 8388607)
  50 named destinations out of 1000 (max. 500000)
- 98 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 90 words of extra memory for PDF output out of 10000 (max. 10000000)
 
