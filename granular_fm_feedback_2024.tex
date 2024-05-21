@@ -52,7 +52,7 @@
 % TO GARANTEE THE DOUBLE BLIND REVIEW PROCESS, PLEASE
 % KEEP THESE GENERIC AUTHOR NAMES AND INSTITUTIONS
 
-\author{Øyvind Brandtsegg, Victor Lazzarini}
+\author{\O{}yvind Brandtsegg, Victor Lazzarini}
 %
 
 \institute{Norwegian University of Science and Technology, Maynooth University \\ \email{oyvind.brandtsegg@ntnu.no, victor.lazzarini@mu.ie}}
@@ -103,7 +103,9 @@ In our second example, we will look at the effect of phase delay and how the gra
 
 In our third example we  try to see if adding amplitude modulation to the feedback path can stabilize the behavior, as can be learned from \cite{Lazzarini-2024}. Here we go back to the phase delay value used in example 1. As seen in figure \ref{fig:ex3}, the oscillator model keeps a steady pitch (up until mod index $> 1.0$) and also an even and stable spacing of modulation sidebands throughout the example. The granular model displays a splitting of sidebands into subharmonics at half the fundamental frequency (at 1.5 seconds). From this we can assume that the AM in the feedback signal has a different effect in granular than what it has in the oscillator model. The effect of AM in the oscillator model is a more controlled situation, with pitch stability and a constant distance to modulations sidebands. In the granular model, the amplitude modulation has a lesser stabilizing effect. This might relate to the fact that the granular model already has a form of amplitude modulation inherent in the envelope for each grain.
 
-We do note that the oscillator model is not pitch stable at modulation index $> 1.0$. This is to be expected (Victor: can you explain why?). The granular model is pitch stable, even if the harmonic pattern makes the fundamental pitch less prominent at high modulation index. This could indicate that FM feedback in granular synthesis can be utilized to explore new areas of pitch stable FM feedback with high modulation indices.
+We do note that the oscillator model is not pitch stable at modulation index $> 1.0$.  For values beyond that range, the feedback expression 
+cannot define the waveform uniquely as a function of time, as it has been shown in the analysis of an equivalent phase modulation arrangement \cite[p.61]{Benson}.
+The granular model is pitch stable, even if the harmonic pattern makes the fundamental pitch less prominent at high modulation index. This could indicate that FM feedback in granular synthesis can be utilized to explore new areas of pitch stable FM feedback with high modulation indices.
 
 \begin{figure}
 	\centering
@@ -151,6 +153,7 @@ We have explored a combination of FM feedback with granular synthesis by attempt
 %\pagebreak
 \begin{thebibliography}{99}
 
+\bibitem{Benson} Benson, D. (1986).\emph{ Music: Mathematical Offering}, Oxford Univ. Press.
 
 \bibitem{Chowning-73} Chowning, J. (1973). \emph{The synthesis of complex audio spectra by means of frequency modulation.} Journal of the Audio Engineering Society, 21 (7), 527-534.
 	
