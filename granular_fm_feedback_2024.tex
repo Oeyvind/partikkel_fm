@@ -52,12 +52,11 @@
 % TO GARANTEE THE DOUBLE BLIND REVIEW PROCESS, PLEASE
 % KEEP THESE GENERIC AUTHOR NAMES AND INSTITUTIONS
 
-\author{\O{}yvind Brandtsegg, Victor Lazzarini}
-%
+%\author{\O{}yvind Brandtsegg, Victor Lazzarini}
+%\institute{Norwegian University of Science and Technology, Maynooth University \\ \email{oyvind.brandtsegg@ntnu.no, victor.lazzarini@mu.ie}}
 
-\institute{Norwegian University of Science and Technology, Maynooth University \\ \email{oyvind.brandtsegg@ntnu.no, victor.lazzarini@mu.ie}}
-
-
+\author{Anonymous}
+\institute{University of X}
 
 \maketitle
 
@@ -136,7 +135,7 @@ Take note that some of the effects described are very specific to the parameter 
 Adjusting the phase delay of the feedback loop has significant effect on both the timbral evolution and the pitch stability. Notably, it is possible to find areas of phase delay (e.g. around 0.21 and 0.77) that produce almost pitch stable results even with the traditional oscillator model. We also observe almost identical modulation behavior when adding a whole cycle to the delay time, e.g. very similar results at 1.77 as we see at 0.77. This phenomenon should be investigated further, as it seems the literature shows little previous research on the matter.
 
 \section{Running the provided code examples}
-The code examples for this paper can be found in a github repository at \url{https://github.com/Oeyvind/partikkel_fm}. There are Csound orchestra files for FM with granular synthesis and with regular oscillators. To compare the two techniques, it is useful to run both with the same set of parameters (adding only a few extra parameters for granular synthesis), and then compare the generated sound files. The repo contains python files to write score files and render sound with both techniques. This will also display spectrograms for the two generated sound files. The Python files contain default parameter settings as a starting point, and allow parameter modification via command line arguments. For example:
+The code examples for this paper can be found in a github repository at \url{https://github.com/xxx}. There are Csound orchestra files for FM with granular synthesis and with regular oscillators. To compare the two techniques, it is useful to run both with the same set of parameters (adding only a few extra parameters for granular synthesis), and then compare the generated sound files. The repo contains python files to write score files and render sound with both techniques. This will also display spectrograms for the two generated sound files. The Python files contain default parameter settings as a starting point, and allow parameter modification via command line arguments. For example:
 \begin{lstlisting}
 python generate_and_compare.py filename cps=200 gr.rate=200
 \end{lstlisting}
