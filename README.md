@@ -1,3 +1,5 @@
+The experiments branch allowss new development without interfering with the main branch used for the 2024 Csound conference paper. 
+
 Examples of fm feedback in granular synthesis, comparing it to simple fm feedback with regular oscillators
 
 To run synthesis of the two types of fm feedback run:
