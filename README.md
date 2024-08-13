@@ -1,4 +1,11 @@
-The experiments branch allowss new development without interfering with the main branch used for the 2024 Csound conference paper. 
+(The experiments branch allows new development without interfering with the main branch used for the 2024 Csound conference paper.)
+
+* Todo
+- create granular-only genereate and display script
+- make line trajectory for (all) parameters
+- if only line start parameter set, then copy line start to line end (default to static value)
+
+--- regular redme below this point ---
 
 Examples of fm feedback in granular synthesis, comparing it to simple fm feedback with regular oscillators
 
