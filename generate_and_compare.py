@@ -21,7 +21,7 @@ defaults["gr.pitch"] = 400
 defaults["gr.dur"] = 1.5
 defaults["adratio"] = 0.5
 defaults["sustain"] = 0.33
-defaults["index_map"] = 0
+defaults["index_map"] = 1
 defaults["inv_phase2"] = 0
 maxfreq = 5000
 
