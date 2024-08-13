@@ -33,7 +33,7 @@ instr 1
   ksustain_amount = p15 ; sustain time (relative) in each grain
   kindex_mapping = p16 ; apply index adjustment formula 
   kinvphase2 = p17 ; invert phase of every 2nd grain
-  kgrainrate = kinvphase2 > 0 ? p5*2 : kgrainrate; and souble the grain rate when using phase inversion of every 2nd grain
+  kgrainrate = kinvphase2 > 0 ? p5*2 : kgrainrate; and double the grain rate when using phase inversion of every 2nd grain
 
   ; index adjustment for granular FM, to attempt to keep the same modulation amount as we get in regular FM feedback
   if kindex_mapping == 1 then
@@ -60,7 +60,7 @@ instr 1
   ifmamptab	ftgentmp 0, 0, 16, -2,  0, 0,   1, 0, 0, 0 ; FM index scalers, per grain
   ifmenv = giSquareWin
   igainmasks ftgentmp	0, 0, 16, -2, 0, 0,   1, -1
-  tablew 1, kinvphase2, igainmasks ; invert phase of every 2nd grain
+  tablew kinvphase2, 1, igainmasks ; invert phase of every 2nd grain
   ichannelmasks	ftgentmp 0, 0, 16, -2,  0, 0,  0
   krandommask = 0
   iwaveamptab ftgentmp	0, 0, 32, -2, 0, 0,   1,0,0,0,0
