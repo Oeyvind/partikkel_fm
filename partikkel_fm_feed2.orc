@@ -72,7 +72,7 @@ instr 1
   ifmamptab	ftgentmp 0, 0, 16, -2,  0, 0,   1, 0, 0, 0 ; FM index scalers, per grain
   ifmenv = giSquareWin
   igainmasks ftgentmp	0, 0, 16, -2, 0, 0,  1, -1
-  ;tablew 1, kinvphase2, igainmasks ; invert phase of every 2nd grain
+  tablew kinvphase2, 1, igainmasks ; invert phase of every 2nd grain
   ichannelmasks	ftgentmp 0, 0, 16, -2,  0, 0,  0
   krandommask = 0
   iwaveamptab ftgentmp	0, 0, 32, -2, 0, 0,   1,0,0,0,0
