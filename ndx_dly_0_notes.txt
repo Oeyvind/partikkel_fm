@@ -1,0 +1,9 @@
+This series explores the relationship between fm index and feedback delay (in fractions of a waveform cycle). Grain rate (fundamental frequency) is kept at 400 Hz in all examples.
+The modulation index varies from 0 to 2 (a little bit higher than in other series of experiments), as some delay settings will require higher modulation indices for sidebands to occur.
+
+We note that timbre complexity (number of sidebands) oscillates with varying delay time. There are some regions of delay times that appear more stable (less complex timbre).
+
+TODO: 
+  - look through the examples/png and note delay time regions that give higher or lower complexity
+  - also look for regions of delay time that provide more variations in complexity with very small adjustments to the delay time
+  - the examples have been prepared with this in mind, making larger increments of delay time where less prominent variation can be observed

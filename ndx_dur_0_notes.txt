@@ -1,0 +1,27 @@
+This series explores the relationship between fm index and grain duration.
+Mod index is automated from 0.5 to 1.2 in all examples. There is a separate example for each grain duration setting, kept constant through each example.
+The evolution is generally that longer grain rates give more modulation. 
+BUT, the trajectory of when sidebands appear is different. Note for example how the first subharmonic sidebands appear:
+- gr.dur=0.6 : subharmonics appear at 2.3 seconds
+- gr.dur=0.7 : subharmonics appear at 1.5 seconds
+- gr.dur=0.8 : subharmonics appear at 1.0 seconds
+- gr.dur=0.9 : subharmonics appear at 0.9 seconds
+- gr.dur=1.0 : subharmonics appear at 0.6 seconds
+- gr.dur=1.1 : subharmonics appear at 0.5 seconds
+- gr.dur=1.2 : subharmonics appear at 0.5 seconds
+- gr.dur=1.25 : subharmonics appear at 0.5 seconds
+- gr.dur=1.3 : subharmonics appear at 0.5 seconds
+- gr.dur=1.35 : subharmonics appear at 0.5 seconds
+- gr.dur=1.4 : subharmonics appear at 0.5 seconds
+- gr.dur=1.5 : subharmonics appear at 0.7 seconds
+- gr.dur=1.6 : subharmonics appear at 0.9 seconds
+- gr.dur=1.7 : subharmonics appear at 0.9 seconds
+- gr.dur=1.8 : subharmonics appear at 0.8 seconds
+- gr.dur=1.9 : subharmonics appear at 0.6 seconds
+- gr.dur=1.0 : subharmonics appear at 0.6 seconds
+- gr.dur=1.1 : subharmonics appear at 0.55 seconds
+The second subharmonic sidebands shows a similar nonlinear evolution (with respect to increasing graindur).
+
+Note also the nonlinear evolution of sidebands (with respect to increasing graindur) from gr.dur=1.2 to 1.4.
+Two extra examples are inserted to show more details. A graindur of 1.3 give less dense sidebands than 1.25 and 1.35.
+

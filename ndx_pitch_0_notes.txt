@@ -1,0 +1,21 @@
+This series explores the relationship between fm index and grain pitch. Grain rate (fundamental frequency) is kept at 400 Hz in all examples.
+Apparently is the relationship between grain rate and grain pitch that makes a difference for the evolution of sidebands with linearly increasing modulation index.
+Mod index is automated from 0.5 to 1.2 in all examples. There is a separate example for each grain pitch setting, kept constant through each example.
+One can note that changing the grain pitch makes for a diffferent evolution of sidebands with increasing modulation index. The pattern is not yet clear, but it seems to oscillate back and forth in complexity with linearly increasing grain pitch.
+
+Note also that new sidebands generally occur halfway between excisting sidebands (octaviation). 
+A notable exception is for grain pitch 545Hz (and upwards until 580Hz) (example 22-25), where we see another distance between sidebands. 
+Here it seems the excisting sidebands are split in three equal distances (5ths as opposed to octaves). 
+We observe (sometimes easier to hear than see) also in example 40-49, where the grain pitch varies from 670 to 740.
+The ranges are approximate as also neighbouring ranges show some of the 5th's sidebands.
+Interesting observation: the splitting into 5ths (3 equal sidebands) does not occur at grain pitches corresonding to a 3-divided ratio (like 1.5, giving a grain pitch of 600, where we might expect this to happen intuitively).
+Still, if we broadly define a region where this phenomenon occurs we see it happening between 540 and 750 Hz, which lies "somewhere around 600Hz".
+Additionally, we can see traces of this 3-division at the end of example 88-90 (grain rate 1380-1400Hz)
+
+We observe a lack of extra sidebands at several grain pitch ranges. These are (220-330, 465-540, 800-830, 845-940), similarly also very late sidebands at 1100-1190).
+The example files for this are: 2-4, 21-22, 56-57,59-60, 68-71
+Noteworthy are the in the middle of a range with no extra sidebands (broadly speaking 800-940Hz), we observe some complexity happening at 835-840 Hz. 
+As if the waveforms that should "line up", misses by a small fraction, and then is brought back in line at the slightly higher grain pitch (845Hz).
+
+The evolution of sidebands with increason modulation index will sometimes pass through more complex regions and then reside again. This happens for example with grain pitch = 730 Hz (example 48).
+This indicates that there is some stabilizing force, pulling the sideband complexity back even when modulation index increases.
