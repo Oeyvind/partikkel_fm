@@ -7,3 +7,11 @@ TODO:
   - look through the examples/png and note delay time regions that give higher or lower complexity
   - also look for regions of delay time that provide more variations in complexity with very small adjustments to the delay time
   - the examples have been prepared with this in mind, making larger increments of delay time where less prominent variation can be observed
+  - also note delay values that makes the sidebands split in 3 equal spacings rather than 2 (ndx_dly_57 is one such)
+    - 77 and 78 split in 5 equal sidebands
+  - and note delay times that provide timbral evolution, rather than abrupt transition from simple to chaos. 
+    - there are significant differences, 
+      - for example some settings that let the first sidebands appear but nothing else
+      - some values have almost no transition
+      - other values keep the sonic nuances of several sidebands rather long into the chaotic region (looks like dense/chaotic in the spectrogram)
+        - for example ndx_dly_64
