@@ -1,0 +1,15 @@
+This series explores the relationship between grain pitch and grain duration in granular FM feedback.
+Modulation index is kept at 0.9, and grain rate (fundamental frequency) is kept at 400 Hz in all examples.
+Grain pitch varies from 200 to 800 in all examples, while the grain dur setting varies between each example.
+
+We note that we can recognize some of the sideband patterns are recognizable from the ndx_ptch examples, 
+where regions of grain pitch corresponds in complexity. This comment assuming the same grain dur (1.3 in the ndx_ptch examples) and mod index (varying in those same examples)
+
+We also note that shorter grain duration generally gives lower complexity of sidebands (e.g. for duration below 1.0)
+The complexity increase is somewhat linearly related to grain duration.
+
+For grain durations 1.7 and above, we start to see sidebands "stepping motion" corresponding to grain pitch changes (se ptch_dur_10 with gr.dur=1.7)
+The sidebands move from one integer division to another. Interesting that the sidebands do not "sweep" but step.
+It seems the sidebands can only appear at integer subdivisions of the fundamental (?)(!!)
+
+

@@ -1,0 +1,9 @@
+This series explores the relationship between grain pitch and feedback delay in granular FM feedback.
+Modulation index is kept at 1, and grain rate (fundamental frequency) is kept at 400 Hz in all examples.
+Grain duration is kapt at 1.5 for all examples.
+Grain pitch varies from 200 to 800 in all examples, while the feedbacl delay setting varies between each example.
+
+The feedback delay strongly influence which sideband patterns we get. 
+So far we have not observed a pattern. 
+In certain parameter ranges, minor changes may have dramatic effect, while in other ranges it is a less significant change.
+
