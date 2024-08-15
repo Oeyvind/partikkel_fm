@@ -1,0 +1,10 @@
+This series explores the relationship between grain pitch and modulation index in granular FM feedback.
+Grain duration is kept at 1.5, and grain rate (fundamental frequency) is kept at 400 Hz in all examples.
+Feedback delay is kept at 0.77 for all examples.
+Mod index varies between each example.
+
+Mod index has a more or less linear effect on timbre complexity as expected. 
+The time at which sidebands occur (corresponding to grain pitch) is noteworthy:
+  - For several mod index values, the area of higher complexity might stay in the same place, then with the next mod index increment,
+  we might get a "hole" (less complex timbre) in that same position
+
