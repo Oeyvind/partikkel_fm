@@ -11,6 +11,8 @@ The ranges are approximate as also neighbouring ranges show some of the 5th's si
 Interesting observation: the splitting into 5ths (3 equal sidebands) does not occur at grain pitches corresonding to a 3-divided ratio (like 1.5, giving a grain pitch of 600, where we might expect this to happen intuitively).
 Still, if we broadly define a region where this phenomenon occurs we see it happening between 540 and 750 Hz, which lies "somewhere around 600Hz".
 Additionally, we can see traces of this 3-division at the end of example 88-90 (grain rate 1380-1400Hz)
+Moreover, we can se sidbands splitting into 5 equal spaced sidebands at gr.pitch=1220 (3.3 seconds into the file ndx_ptch_75), and more clearly at gr.pitch 1230. 
+We also see this intermittently with gr.pitch=1320 to 1340. At gr.pitch=1400 we see an intermittent split into 7 equal spaced sidebands (2.7 second into the file ndx_ptch_90).
 
 We observe a lack of extra sidebands at several grain pitch ranges. These are (220-330, 465-540, 800-830, 845-940), similarly also very late sidebands at 1100-1190).
 The example files for this are: 2-4, 21-22, 56-57,59-60, 68-71

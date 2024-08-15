@@ -3,6 +3,22 @@ The modulation index varies from 0 to 2 (a little bit higher than in other serie
 
 We note that timbre complexity (number of sidebands) oscillates with varying delay time. There are some regions of delay times that appear more stable (less complex timbre).
 
+We see no new sidebands at delay values 0, 0.18, 0.48.
+Low complexity at delay values 0.1, 0.15, 0.2, 0.47, 0.49.
+The low end (below delay = 0.5) seems to show generally lower complexity, but with have regions of higher complexity at 0.13, 0.17, 0.21-0.45.
+
+Transition from simple to complex: It might be interesting to find parameter values where we have a longer transition from first sidebands to more complex timbres.
+Delay values with short transition time (nothing much happening before it sudddenly is complex): 
+0.17, 0.2-0.4, 0.49-0.57, 1.0-1.1, 1.45-1.6, 1.85-2.0, 2.4-2.6, 2.8-3.1, ... a bit more unclear above these values (retains some order within the complexity).
+a preliminary observation might lead us to think that values around half and whole duty cycles give more abrupt transitions into complexity.
+
+Examples with longer transitions, where different sideband configurations can be more clearly discerned:
+0.15, 0.4-0.48, 0.58-0.64 and more clearly 0.66-0.68, 0.7-0.9, 1.2-1.4, 1.7-1.75, 2.2-2.3, 2.7-2.8 (dense sidebands but somewhat orderly), 3.2-3.3 (similar)
+
+In some regions (of delay time values), the behaviour changes significantly with small adjustments. In other regions the behaviour stays similar over a reange of values.
+Regions of interest (more nuances with small adjustments): 0.1-0.18, 0.45-0.48, 0.58-0.9, 1.65-1.75, 2.2-2.3, 2.7, 3.2-3.3.
+
+
 TODO: 
   - look through the examples/png and note delay time regions that give higher or lower complexity
   - also look for regions of delay time that provide more variations in complexity with very small adjustments to the delay time
