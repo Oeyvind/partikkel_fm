@@ -1,9 +1,22 @@
-(The experiments branch allows new development without interfering with the main branch used for the 2024 Csound conference paper.)
+The experiments branch allows new development without interfering with the main branch (used for the 2024 Csound conference paper.)
+Experiments are 
+  - a systematic exploration of parameter combinations that might lead to interesting results
+  - one quality criteria for "interesting" is timbres that show relatively high complexity while being pitch stable
+  - another criteria for interesting is controlled transitions between simple and complex timbres
 
-* Todo
-- create granular-only genereate and display script
-- make line trajectory for (all) parameters
-- if only line start parameter set, then copy line start to line end (default to static value)
+Experiment notes can be found in .txt files such as 
+ndx_dly_0_notes.txt
+ndx_dur_0_notes.txt
+ndx_pitch_0_notes.txt
+ptch_dly_0_notes.txt
+ptch_dur_0_notes.txt
+ptch_mod_0_notes.txt
+dur_...(yet to be done)
+dly_...(yet to be done)
+...
+The experiment notes filename alludes to the parameters being experimented on. The first name (e.g. ndx = modulation index) is automated with a line, the second name (e.g. dly) has a set value for each experiment file.
+
+
 
 --- regular redme below this point ---
 

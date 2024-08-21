@@ -12,4 +12,4 @@ For grain durations 1.7 and above, we start to see sidebands "stepping motion" c
 The sidebands move from one integer division to another. Interesting that the sidebands do not "sweep" but step.
 It seems the sidebands can only appear at integer subdivisions of the fundamental (?)(!!)
 
-
+Particularly interesting duration values: 1.1 to 1.7 (extending lower and higher depending on mod index)

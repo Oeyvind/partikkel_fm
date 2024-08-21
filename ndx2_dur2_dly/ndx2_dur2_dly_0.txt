@@ -1,0 +1,51 @@
+This series of exxperiments attempted to find a counterbalance between grain duration and modulation index.
+The assumption was that longer grains generally would need less modulation to produce similar timbre complexity.
+Both grain dur and mod index are modulated (linearly) over each experiment.
+
+Several different feedback delay settings was used, and til file names reflect this, for eample ndx2_dur2_dly066 (delay time 0.66).
+As each delay time produces different sideband patterns, it seemed useful to try out the dur/index combo with these different contexts.
+
+Different grain dur intervals was used, in the same combination for each subseries (delay time setting) of this experiment.
+The grain duration would then vary between these values:
+  - 1 grdur 0.5 - 0.8
+  - 2 grdur 0.7 - 1.0
+  - 3 grdur 0.9 - 1.2 
+  - 4 grdur 1.1 - 1.4
+  - 5 grdur 1.3 - 1.4
+  - 6 grdur 1.4 - 1.6
+  - 7 grdur 1.6 - 2.0
+  - 8 grdur 0.8 - 1.6
+
+Interesting delay time settings could be  0.6, 0.66, 0.77, 1.25, 1.75, 2.25
+Initially, only 0.6, 0.66 and 0.77 was tested.
+
+As a first impression, a linear counterbalance between grain dur and mod index can not be found. 
+Within each grain duration interval, the timbre complexity would vary, sometimes being more complex in the middle of the experiment (middle of the linear automation of dur).
+As such the start and end points of the index value was hard to set reasonably. 
+
+Notably, the timbre complexity as a result of changing the mod index might also "oscillate" in some cases. 
+This means that we might have a reasonably simple/stable timbre at a mod index of, say 0.8. 
+Then it will increase in complexity as the mod index rise to, say 1.1, AND THEN DECREASE AGAIN if mod index is set to an even higher value.
+This "oscillation" makes it hard to know if we are totally off in trying to determine reasonable grain.dur/index combinations.
+
+Also, perhaps the "oscillation" is a result of the chaotic/indeterministic behavior (as known with mod index above 1).
+... which mean, by pure luck, we might happen to get simple timbres at some exact high value of mod index.
+Assumedly, there must be some system to it ...(?), or some way of describing tendencies of behaviour(?)
+
+Another notable thing is that we can see an initial disturbance. 
+For example, if a stable index setting (with some other combination of parameters) at the END of an experiment produce a stable/simple sound,
+then starting the net experiment with these setting will not necessarily produe a stable/simple sound.
+Perhaps this initial disturbance is related to the transient at the start of the sound. 
+When the sound starts, we have a discontinulty, as it was previously very differnt (silence), and the chaotic system is sensitive to this change (?).
+Listening to the produced sounds, this disturbance is perhaps less prominent that what I observed when adjusting the parameters and making the experimentns (visual only inspection).
+When listeing it is easier to perceive the continuity of timbral evolution (from the end of one experiment to the start of the next),
+still the discontinuity will often make a more complex sound briafly at the start of the next experiment. 
+It is thus not neglible, but can perhaps be assumed to rather consistently stabilize(?) after a short time (0.2 seconds or less). 
+
+Perhaps make an automatic procedure for searching through parameter combinations that produce similar levels of complexity?
+It would need a "complexity analyzer", for example looking for sideband spacing (less distance = higher complexity).
+Then vary the parameter settings incrementally (either with continuous sound, or restarting the sound from silence), to exhaustively map all parameter combinations.
+Considering the parameters mod index, graindur, grainpitch and feedback delay, it is just 4 parameters so the search space should be manageable.
+Including fundamental frequency (grain rate) might als be useful, as it will most likely also behave differently with different fundamentals.
+How to represent the result of such an analysis?
+... some kind of 5-dimensional graph?
