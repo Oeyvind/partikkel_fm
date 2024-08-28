@@ -3,6 +3,7 @@ import sys
 import subprocess
 from collections import OrderedDict
 import json
+import numpy as np
 
 # generate sound with Csound for granular FM,
 # iteratively explore different parameter combinations,
@@ -54,10 +55,13 @@ def render(filename_root, save_audio_display=False):
     print('completed: \n', err1)
 
 # test parameters
-graindurs = [0.7, 1.0, 1.3, 1.6]
-modindices = [0.8, 1, 1.2, 1.4]
-delays = [0.25, 0.5, 0.75, 1]
-grainpitches = [200,300,400,500]
+graindurs = np.around(np.arange(0.8,1.61,0.05),2).tolist()
+#[0.8, 0.85, 0.9, 0.95, 1.0, 1.05, 1.1, 1.15, 1.2, 1.3, 1.4, 1.5, 1.6]
+modindices = np.around(np.arange(0.8,1.51,0.05),2).tolist()
+#[0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5]
+delays = [0.17,0.19,0.2,0.23,0.25,0.33,0.4,0.45,0.47,0.49,0.5,0.6,0.66,0.75,0.77,0.8,1.25]#[0.17,0.19,0.2,0.23,0.25,0.33,0.4,0.45,0.47,0.49,0.5,0.6,0.66,0.75,0.77,0.8,1.25]#np.around(np.arange(0.47,0.8,0.03),2).tolist()
+#[0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8]
+grainpitches = [200,400, 600, 800]#[200, 250, 300, 350, 400, 450, 500]
 with open("graindurs.json", 'w') as f:
     json.dump(graindurs, f) 
 with open("modindices.json", 'w') as f:

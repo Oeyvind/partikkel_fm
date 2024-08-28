@@ -1,8 +1,8 @@
 To use analyzer:
 
 python generate_and_analyze.py filename
-- will render audio with the parameter settings in json files
-- graindurs.json and similarly for modindices, delays, grainpitches
+- will render audio with the parameter settings for graindurs, modindices, delays, grainpitches
+- set the parameters in the py file, approx line 57: graindurs = [0.7, 1.0, 1.3, 1.6]
 - all parameter combinations will be rendered, so it creates a large number of files in /data
 - each parameter combination creates a .sco file and a .txt file
 - the txt file contains analysis data genereated by Csound

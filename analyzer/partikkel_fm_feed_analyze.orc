@@ -141,11 +141,11 @@ instr 2
   kMags[0] = 0 ; HERE BE DRAGONS, workaround for DC offset in crest calculation
   kavg_amp_0 = sumarray(kMags)/ibins
   kmax_amp_0,kdx maxarray kMags
-  printk2 kdx,2
-  printk2 kmax_amp_0, 5 
-  printk2 kavg_amp_0, 10
+  ;printk2 kdx,2
+  ;printk2 kmax_amp_0, 5 
+  ;printk2 kavg_amp_0, 10
   kcrest divz kmax_amp_0, kavg_amp_0, -1
-  printk2 kcrest, 15
+  ;printk2 kcrest, 15
   kSidebands_present[0][2] = kcrest
 
   kdiv init 99 ; not to do the analysis at init, but wait for the first metro tick
