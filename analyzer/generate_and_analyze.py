@@ -8,6 +8,9 @@ import json
 # iteratively explore different parameter combinations,
 # analyze the timbre complexity (number of sidebands, crest),
 # then store the analysis data in a separate file for each parameter combination
+save_audio_display = False
+if len(sys.argv) > 2: # if any second argument on the command line, save audio files and graphics
+   save_audio_display = True
 
 # set defult p-fields
 defaults = OrderedDict()
@@ -25,8 +28,10 @@ defaults["adratio"] = 0.5
 defaults["sustain"] = 0.33
 defaults["index_map"] = 0
 defaults["inv_phase2"] = 0
+maxfreq = 5000
 
-def render(filename_root):
+def render(filename_root, save_audio_display=False):
+  partikkelwav = filename_root+'_partikl.wav'
   partikkelscore = filename_root+'_analyze.sco'
   partikkelscorefile = open(partikkelscore, "w")
   partikkelscorefile.write('i1 0 ') # synthesize
@@ -40,13 +45,13 @@ def render(filename_root):
   partikkelscorefile.close()
   #print('\nNondefault parms:')
   #print(' '.join(sys.argv[2:]))
-  err1 = subprocess.run('csound partikkel_fm_feed_analyze.orc {} -n -m0 -d'.format(partikkelscore))
-  print('completed: \n', err1)
-
-# command line override
-for a in sys.argv[2:]:
-  a2 = a.split('=')
-  defaults[a2[0]] = a2[1] # set parameter value
+  if save_audio_display:
+    err1 = subprocess.run('csound partikkel_fm_feed_analyze.orc {} -o{} -m0 -d'.format(partikkelscore, partikkelwav))
+    err2 = subprocess.run('python ../spectrogram_and_waveform.py {} {} {} {} {}'.format(filename_root, partikkelwav, maxfreq, defaults["cps"], "nodisplay"))
+    print('completed: \n', err1, err2)
+  else:
+    err1 = subprocess.run('csound partikkel_fm_feed_analyze.orc {} -n -m0 -d'.format(partikkelscore))
+    print('completed: \n', err1)
 
 # test parameters
 graindurs = [0.7, 1.0, 1.3, 1.6]
@@ -71,10 +76,10 @@ for graindur in graindurs:
       for grainpitch in grainpitches:
         defaults["gr.pitch"] = grainpitch
         path = "./data"
-        filename_root = "{}/{}_gd{}_ndx_{}_dly{}_gp{}_cps{}".format(path, sys.argv[1], 
+        filename_root = "{}/{}_gd{}_ndx{}_dly{}_gp{}_cps{}".format(path, sys.argv[1], 
                                                            int(defaults["gr.dur"]*1000),
                                                            int(defaults["mod"]*1000), 
                                                            int(defaults["delay"]*1000),
                                                            int(defaults["gr.pitch"]),
                                                            int(defaults["cps"]))
-        render(filename_root)
+        render(filename_root, save_audio_display)

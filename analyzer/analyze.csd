@@ -10,7 +10,7 @@ nchnls = 2
 
 instr 1
 
-  a1  diskin2 "sideband_test4_partikl.wav", 1
+  a1  diskin2 "./data/test_gd1600_ndx1400_dly250_gp300_cps400_partikl.wav", 1
   ifftsize = 8192
   ibins init ifftsize/2
   kIn[] init ifftsize
@@ -44,7 +44,7 @@ instr 1
   kSidebands_present[] init imax_sidebands+1, 3
   kavg_amp_0 = sumarray(kMags)/ibins
   kmax_amp_0 maxarray kMags
-  kcrest = kmax_amp_0/kavg_amp_0
+  kcrest divz kmax_amp_0, kavg_amp_0, -1
   kSidebands_present[0][2] = kcrest
 
   kdiv init 99 ; not to do the analysis at init, but wait for the first metro tick

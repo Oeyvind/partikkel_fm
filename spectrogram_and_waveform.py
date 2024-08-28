@@ -14,6 +14,11 @@ basefilename = sys.argv[1]
 f1 = sys.argv[2]
 maxfreq = int(sys.argv[3])
 basefreq = float(sys.argv[4])
+if sys.argv[-1] == 'nodisplay':
+  nodisplay = True
+  sys.argv = sys.argv[:-1]
+else:
+  nodisplay = False
 nondefaults = ' '.join(sys.argv[5:])
 
 fftsize = 8192
@@ -46,7 +51,8 @@ axs[2].annotate('nondefault parms: '+nondefaults, (0,0))
 axs[0].set_title(f1)
 plt.tight_layout()
 plt.savefig(basefilename+'_display.png')
-plt.show()
+if not nodisplay:
+  plt.show()
 
 
 

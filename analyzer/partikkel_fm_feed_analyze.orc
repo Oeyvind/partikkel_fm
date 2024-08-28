@@ -135,12 +135,17 @@ instr 2
   
   ; array holds 
   ; number of sidebands found,
-  ; expected nummber of sidebands, and
+  ; expected number of sidebands, and
   ; sum of crest values for each N-subdivision present 
   kSidebands_present[] init imax_sidebands+1, 3
+  kMags[0] = 0 ; HERE BE DRAGONS, workaround for DC offset in crest calculation
   kavg_amp_0 = sumarray(kMags)/ibins
-  kmax_amp_0 maxarray kMags
+  kmax_amp_0,kdx maxarray kMags
+  printk2 kdx,2
+  printk2 kmax_amp_0, 5 
+  printk2 kavg_amp_0, 10
   kcrest divz kmax_amp_0, kavg_amp_0, -1
+  printk2 kcrest, 15
   kSidebands_present[0][2] = kcrest
 
   kdiv init 99 ; not to do the analysis at init, but wait for the first metro tick
@@ -191,7 +196,7 @@ instr 2
 
   kwritefile init 0
   if (kdiv == imax_sidebands+1) && (kwritefile > 0) then
-    ;printarray kSidebands_present
+    printarray kSidebands_present
     kwritefile = 0
     gkAnalysis[] = kSidebands_present
     Sscoreline sprintf {{i3 0 0.1 "%s"}}, Sfilename
