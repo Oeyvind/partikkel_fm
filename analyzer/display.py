@@ -7,9 +7,17 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button, Slider
 from  matplotlib.patches import Rectangle
-#from matplotlib import cm
+from matplotlib.backend_bases import MouseButton
+import subprocess
+import os
 
-# read audio analysis files and display
+# read audio analysis files and display analysis data in 3d
+
+# optional argument to load previous analysis from file 
+mode = "analyze"
+if len(sys.argv) > 1:
+    if sys.argv[1] == "saved":
+        mode = "saved"
 
 # get parameter values
 with open("graindurs.json", 'r') as f:
@@ -39,41 +47,28 @@ def get_timbre_analysis(f, sideband_thresh):
     return sideband_div, crest_sideband, crest_global
 
 # get data
-# 1. read file, determine which sideband we want
-# 2. make 2D data structure with graindur and modindex as the dimensions
-#   - the data structure does not have labels, it is just 2D arrays
-#   - the parameter lists can be used to correctly label the data (e.g. graindur=0.7, modindex=0.8 is at index 0,0)
-path = "./data/test_"
-data = np.ndarray([len(graindurs), len(modindices), len(delays), len(grainpitches), 3])
-for i in range(len(graindurs)):
-    g = graindurs[i]
-    for j in range(len(modindices)):
-        m = modindices[j]
-        for k in range(len(delays)):
-            d = delays[k]
-            for l in range(len(grainpitches)):
-                p = grainpitches[l]
-                filename = "gd{}_ndx{}_dly{}_gp{}_cps400_analyze.txt".format(int(g*1000),int(m*1000), int(d*1000), int(p))
-                timbre_analysis = get_timbre_analysis(filename, sideband_thresh)
-                data[i][j][k][l] = timbre_analysis
-'''       
-print(data)
-for g in graindurs:
-    for m in modindices:
-        for d in delays:
-            for p in grainpitches:
-                print("graindur", g, "modindex", m, "delay", d, "grainpitch", p, "\n", 
-                      data[graindurs.index(g)]
-                      [modindices.index(m)]
-                      [delays.index(d)]
-                      [grainpitches.index(p)])
-'''
-# data filtering
-# to show graindur vs modindex at delay=0.5 and pitch=200
-#displaydata = data[:,:,delays.index(0.25),grainpitches.index(200)]
-# to show delay vs graipitch
-#displaydata = data[graindurs.index(0.7),modindices.index(0.8),:,:]
-#print(displaydata)
+if mode == "saved":
+    data = np.load("data_array.npy")
+else:
+    path = "./data/test_"
+    data = np.ndarray([len(graindurs), len(modindices), len(delays), len(grainpitches), 3])
+    filenum = 0
+    numfiles = len(graindurs) * len(modindices) * len(delays) * len(grainpitches)
+    for i in range(len(graindurs)):
+        g = graindurs[i]
+        for j in range(len(modindices)):
+            m = modindices[j]
+            for k in range(len(delays)):
+                d = delays[k]
+                for l in range(len(grainpitches)):
+                    print("reading file {} of {}".format(filenum, numfiles))
+                    p = grainpitches[l]
+                    filename = "gd{}_ndx{}_dly{}_gp{}_cps400_analyze.txt".format(int(g*1000),int(m*1000), int(d*1000), int(p))
+                    timbre_analysis = get_timbre_analysis(filename, sideband_thresh)
+                    data[i][j][k][l] = timbre_analysis
+                    filenum += 1
+
+    np.save("data_array.npy", data,) 
 
 # parameter names and their indices into the data array
 parms = {"graindur": [graindurs,0], 
@@ -88,36 +83,38 @@ init_slider_1 = parms[slider_1_parm][0][3]
 init_slider_2 = parms[slider_2_parm][0][1]
 displaydata = data[:,:,delays.index(init_slider_1),grainpitches.index(init_slider_2)]
 
-# plot
+# plot axes
 fig, ax0 = plt.subplots()
-ax = fig.add_axes([0.15, 0.2, 0.8, 0.8],projection='3d')
+ax = fig.add_axes([0.2, 0.2, 0.8, 0.8],projection='3d')
+axdelay = fig.add_axes([0.2, 0.1, 0.6, 0.03])
+axdelay2 = fig.add_axes([0.2, 0.15, 0.6, 0.03])
+axpitch = fig.add_axes([0.2, 0.05, 0.6, 0.03])
+ax_legend = fig.add_axes([0.03, 0.7, 0.2, 0.2])
+ax_navigator = fig.add_axes([0.03, 0.25, 0.25, 0.35])
+ax_navigator.set_xticks([])
+ax_navigator.set_yticks([])
+
+# 3d grid for barplot
 x_parm = parms[display_x][0]
 y_parm = parms[display_y][0]
 x,y = np.meshgrid(x_parm, y_parm)
 xx,yy = x.ravel(), y.ravel()
 
 # Make horizontal sliders to control the extra parameters
-axdelay = fig.add_axes([0.2, 0.1, 0.6, 0.03])
 slider_1 = Slider(
     ax=axdelay,
     label= slider_1_parm,
     valmin = min(parms[slider_1_parm][0]),
     valmax = max(parms[slider_1_parm][0]),
     valinit = init_slider_1,
-    valstep = parms[slider_1_parm][0]#[1]-parms[slider_1_parm][0][0]
+    valstep = parms[slider_1_parm][0],
+    color='lightgrey'
 )
-axpitch = fig.add_axes([0.2, 0.05, 0.6, 0.03])
-slider_2 = Slider(
-    ax=axpitch,
-    label= slider_2_parm,
-    valmin = min(parms[slider_2_parm][0]),
-    valmax = max(parms[slider_2_parm][0]),
-    valinit = init_slider_2,
-    valstep = parms[slider_2_parm][0]#[1]-parms[slider_2_parm][0][0]
-)
+# make slider grayed out, as we should use it only for display
+rect_gray = Rectangle((0, 0), 3, 3, color=(0.5,0.5,0.5,0.7))
+axdelay.add_artist(rect_gray)
 
-axdelay2 = fig.add_axes([0.2, 0.15, 0.6, 0.03])
-slider_3 = Slider(
+slider_1c = Slider(
     ax=axdelay2,
     label= "delay_control",
     valmin = 0,
@@ -128,17 +125,25 @@ slider_3 = Slider(
 def set_delay(val):
     slider_1.set_val(parms[slider_1_parm][0][val])
 
+slider_2 = Slider(
+    ax=axpitch,
+    label= slider_2_parm,
+    valmin = min(parms[slider_2_parm][0]),
+    valmax = max(parms[slider_2_parm][0]),
+    valinit = init_slider_2,
+    valstep = parms[slider_2_parm][0]#[1]-parms[slider_2_parm][0][0]
+)
 
-ax_legend = fig.add_axes([0.05, 0.2, 0.2, 0.7])
-rect_red = Rectangle((0.1, 0.8), 0.1, 0.035, color='red')
+# color legend
+rect_red = Rectangle((0, 0.9), 0.1, 0.1, color='red')
 ax_legend.add_artist(rect_red)
-ax_legend.text(0.1, 0.76, "Global crest", dict(size=8))
-rect_blue = Rectangle((0.1, 0.6), 0.1, 0.035, color='blue')
+ax_legend.text(0.15, 0.9, "Global crest", dict(size=8))
+rect_blue = Rectangle((0, 0.7), 0.1, 0.1, color='blue')
 ax_legend.add_artist(rect_blue)
-ax_legend.text(0.1, 0.56, "Sideband crest", dict(size=8))
-rect_black = Rectangle((0.1, 0.4), 0.1, 0.035, color=(0.2,0.2,0.2))
+ax_legend.text(0.15, 0.7, "Sideband crest", dict(size=8))
+rect_black = Rectangle((0, 0.5), 0.1, 0.1, color=(0.2,0.2,0.2))
 ax_legend.add_artist(rect_black)
-ax_legend.text(0.1, 0.36, "Probably noisy", dict(size=8))
+ax_legend.text(0.15, 0.5, "Probably noisy", dict(size=8))
 ax_legend.axis('off')
 
 # The function to redraw the plot
@@ -166,14 +171,49 @@ def update(val):
     ax.set_ylabel(display_y)
     ax.set_zlabel("sidebands")
     ax.set_title('Sidebands analysis')
+    # navigator
+    global navigator_colors_t
+    navigator_colors = np.ndarray((len(x_parm),len(y_parm),4))
+    for i in range(len(colors)):
+        navigator_colors[i%len(x_parm),int(i/len(x_parm))] = colors[i]
+    navigator_colors_t = navigator_colors
+    navigator_colors = np.rot90(navigator_colors)
+    ax_navigator.imshow(navigator_colors) 
     fig.canvas.draw_idle()
 
 # register the update function with each slider
 slider_2.on_changed(update)
 slider_1.on_changed(update)
-slider_3.on_changed(set_delay)
+slider_1c.on_changed(set_delay)
 
-update(0)
+
+update(1)
+def on_move(event):
+    if (event.inaxes == ax_navigator):
+        x = round(event.xdata)
+        y = len(parms[display_y][0])-round(event.ydata)-1
+        #print(f'data coords {x} {y}  {parms[display_x][0][x]} {parms[display_y][0][y]}  {navigator_colors_t[x,y]}')
+
+def on_click(event):
+    if (event.inaxes == ax_navigator):
+        x = round(event.xdata)
+        y = len(parms[display_y][0])-round(event.ydata)-1
+        #print(f'file test_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider_1.val*1000)}_gp{int(slider_2.val)}_cps400_display.png')
+        png_file = f'./data/test_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider_1.val*1000)}_gp{int(slider_2.val)}_cps400_display.png'
+        wav_file = f'./data/test_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider_1.val*1000)}_gp{int(slider_2.val)}_cps400_partikl.wav'
+        print(png_file)
+        #os.startfile(filename, 'open')
+        platform = sys.platform
+        print(platform)
+        if platform == 'darwin':
+            subprocess.call(('open', png_file))
+            subprocess.call(('open', wav_file))
+        elif platform in ['win64', 'win32']:
+            subprocess.call(('cmd', '/C', 'start', '', png_file))
+            subprocess.call(('cmd', '/C', 'start', '', wav_file))
+
+binding_id = plt.connect('motion_notify_event', on_move)
+plt.connect('button_press_event', on_click)
 
 ax0.axis('off')
 plt.show()

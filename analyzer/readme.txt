@@ -1,7 +1,13 @@
 To use analyzer:
 
-python generate_and_analyze.py filename
-- will render audio with the parameter settings for graindurs, modindices, delays, grainpitches
+python generate_and_analyze.py filename mode nosave
+- filename should be 'test', mode can be 'csound' or 'spectrogram'
+- the third argument can be used to skip generation of sound files (for debugging)
+  - which again makes the spectrogram command invalid, as it has not soundfiles on which to make the spectrogram
+- Normal operation example (run both one after another):
+  python generate_and_analyze.py test csound
+  python generate_and_analyze.py test spectrogram
+  - will render audio with the parameter settings for graindurs, modindices, delays, grainpitches
 - set the parameters in the py file, approx line 57: graindurs = [0.7, 1.0, 1.3, 1.6]
 - all parameter combinations will be rendered, so it creates a large number of files in /data
 - each parameter combination creates a .sco file and a .txt file
@@ -16,5 +22,9 @@ python generate_and_analyze.py filename
 - an additional argument (any) will also save sound files and spectrum plots for each file
   python generate_and_analyze.py filename True
 
-python display.py
+python display.py mode
 - will show a 3d plot of the analysis data
+- mode can be 'analyze' or 'saved'
+  - analyze will read all files, create the data array (and save it to file)
+  - saved will just read the data array from file
+  - both modes will display the 3d plot (use analyze the first run, and then saved for later runs where the data has not changed)
