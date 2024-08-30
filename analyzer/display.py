@@ -13,26 +13,26 @@ import os
 
 # read audio analysis files and display analysis data in 3d
 
+# select dataset, e.g. 'test_'
+dataset = sys.argv[1]
+
 # optional argument to load previous analysis from file 
 mode = "analyze"
-if len(sys.argv) > 1:
-    if sys.argv[1] == "saved":
+if len(sys.argv) > 2:
+    if sys.argv[2] == "saved":
         mode = "saved"
 
-# get parameter values
-with open("graindurs.json", 'r') as f:
-    graindurs = json.load(f) 
-with open("modindices.json", 'r') as f:
-    modindices = json.load(f) 
-with open("delays.json", 'r') as f:
-    delays = json.load(f) 
-with open("grainpitches.json", 'r') as f:
-    grainpitches = json.load(f) 
+# read test parameters from file 'dataset_parametervalues.py'
+# this should create list objects:
+# p.graindurs, p.modindices, p.delays, p.grainpitches
+p = ''
+get_parameters = f"import {dataset}_parametervalues as p"
+exec(get_parameters)
+
 
 sideband_thresh = 0.7 # ratio of sidebands present (with relation to max number of bands that could be present) for each N-subdiv sidebands
 
 def get_timbre_analysis(f, sideband_thresh):
-    #print(filename)
     f = open(path+filename, "r")
     timbre_data = []
     for line in f.readlines():
@@ -43,45 +43,47 @@ def get_timbre_analysis(f, sideband_thresh):
         if float(timbre_data[i][0]) > float(timbre_data[i][1])*sideband_thresh:
             sideband_div = i
     crest_sideband = timbre_data[sideband_div][2]
-    #print(sideband_div, crest_sideband, crest_global)            
     return sideband_div, crest_sideband, crest_global
 
 # get data
 if mode == "saved":
-    data = np.load("data_array.npy")
+    data = np.load(f"{dataset}_data_array.npy")
 else:
-    path = "./data/test_"
-    data = np.ndarray([len(graindurs), len(modindices), len(delays), len(grainpitches), 3])
+    path = f"./data/"
+    data = np.ndarray([len(p.graindurs), len(p.modindices), len(p.delays), len(p.grainpitches), 3])
     filenum = 0
-    numfiles = len(graindurs) * len(modindices) * len(delays) * len(grainpitches)
-    for i in range(len(graindurs)):
-        g = graindurs[i]
-        for j in range(len(modindices)):
-            m = modindices[j]
-            for k in range(len(delays)):
-                d = delays[k]
-                for l in range(len(grainpitches)):
-                    print("reading file {} of {}".format(filenum, numfiles))
-                    p = grainpitches[l]
-                    filename = "gd{}_ndx{}_dly{}_gp{}_cps400_analyze.txt".format(int(g*1000),int(m*1000), int(d*1000), int(p))
+    numfiles = len(p.graindurs) * len(p.modindices) * len(p.delays) * len(p.grainpitches)
+    for i in range(len(p.graindurs)):
+        g = p.graindurs[i]
+        for j in range(len(p.modindices)):
+            m = p.modindices[j]
+            for k in range(len(p.delays)):
+                d = p.delays[k]
+                for l in range(len(p.grainpitches)):
+                    if filenum%100 == 0:                    
+                        print("reading file {} of {}".format(filenum, numfiles))
+                    gp = p.grainpitches[l]
+                    filename = "{}_gd{}_ndx{}_dly{}_gp{}_cps400_analyze.txt".format(dataset, int(g*1000),int(m*1000), int(d*1000), int(gp))
                     timbre_analysis = get_timbre_analysis(filename, sideband_thresh)
                     data[i][j][k][l] = timbre_analysis
                     filenum += 1
 
-    np.save("data_array.npy", data,) 
+    np.save(f"{dataset}_data_array.npy", data,) 
 
 # parameter names and their indices into the data array
-parms = {"graindur": [graindurs,0], 
-         "mod index": [modindices,1], 
-         "delay": [delays,2], 
-         "grain pitch": [grainpitches,3]}
+parms = {"graindur": [p.graindurs,0], 
+         "mod index": [p.modindices,1], 
+         "delay": [p.delays,2], 
+         "grain pitch": [p.grainpitches,3]}
 display_x = "graindur"
 display_y = "mod index"
 slider_1_parm = "delay"
 slider_2_parm = "grain pitch"
-init_slider_1 = parms[slider_1_parm][0][3]
-init_slider_2 = parms[slider_2_parm][0][1]
-displaydata = data[:,:,delays.index(init_slider_1),grainpitches.index(init_slider_2)]
+slider_1_data = parms[slider_1_parm][0]
+slider_2_data = parms[slider_2_parm][0]
+init_slider_1 = slider_1_data[1]
+init_slider_2 = slider_2_data[1]
+displaydata = data[:,:,slider_1_data.index(init_slider_1),slider_2_data.index(init_slider_2)]
 
 # plot axes
 fig, ax0 = plt.subplots()
@@ -149,7 +151,7 @@ ax_legend.axis('off')
 # The function to redraw the plot
 def update(val):
     ax.clear()
-    displaydata = data[:,:,delays.index(slider_1.val),grainpitches.index(slider_2.val)]
+    displaydata = data[:,:,slider_1_data.index(slider_1.val),slider_2_data.index(slider_2.val)]
     # get analysis, must transpose (swap axes)
     sideband_div = np.transpose(displaydata[:,:,0]).ravel() 
     crests = np.transpose(displaydata[:,:,2]).ravel()
@@ -170,6 +172,7 @@ def update(val):
     ax.set_xlabel(display_x) 
     ax.set_ylabel(display_y)
     ax.set_zlabel("sidebands")
+    ax.set_zlim(0,10)
     ax.set_title('Sidebands analysis')
     # navigator
     global navigator_colors_t
@@ -199,8 +202,8 @@ def on_click(event):
         x = round(event.xdata)
         y = len(parms[display_y][0])-round(event.ydata)-1
         #print(f'file test_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider_1.val*1000)}_gp{int(slider_2.val)}_cps400_display.png')
-        png_file = f'./data/test_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider_1.val*1000)}_gp{int(slider_2.val)}_cps400_display.png'
-        wav_file = f'./data/test_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider_1.val*1000)}_gp{int(slider_2.val)}_cps400_partikl.wav'
+        png_file = f'./data/{dataset}_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider_1.val*1000)}_gp{int(slider_2.val)}_cps400_display.png'
+        wav_file = f'./data/{dataset}_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider_1.val*1000)}_gp{int(slider_2.val)}_cps400_partikl.wav'
         print(png_file)
         #os.startfile(filename, 'open')
         platform = sys.platform
