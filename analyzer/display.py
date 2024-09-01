@@ -75,22 +75,38 @@ parms = {"graindur": [p.graindurs,0],
          "mod index": [p.modindices,1], 
          "delay": [p.delays,2], 
          "grain pitch": [p.grainpitches,3]}
-display_x = "graindur"
-display_y = "mod index"
-slider_1_parm = "delay"
-slider_2_parm = "grain pitch"
-slider_1_data = parms[slider_1_parm][0]
-slider_2_data = parms[slider_2_parm][0]
-init_slider_1 = slider_1_data[1]
-init_slider_2 = slider_2_data[1]
-displaydata = data[:,:,slider_1_data.index(init_slider_1),slider_2_data.index(init_slider_2)]
+
+# it works best if the parameters displayed on X and Y axis are linearly spaced
+displaypreset = 1
+if displaypreset == 1:
+    display_x = "graindur"
+    display_y = "mod index"
+    slider1_parm = "delay"
+    slider2_parm = "grain pitch"
+    displaydata = data[:,:,0,0]
+elif displaypreset == 2:
+    display_x = "delay" 
+    display_y = "grain pitch"
+    slider1_parm = "graindur" 
+    slider2_parm = "mod index"
+    displaydata = data[0,0,:,:]
+elif displaypreset == 3:
+    display_x = "delay" 
+    display_y = "mod index"
+    slider1_parm = "graindur" 
+    slider2_parm = "grain pitch"
+    displaydata = data[0,:,:,0]
+
+slider1_data = parms[slider1_parm][0]
+slider2_data = parms[slider2_parm][0]
 
 # plot axes
 fig, ax0 = plt.subplots()
 ax = fig.add_axes([0.2, 0.2, 0.8, 0.8],projection='3d')
-axdelay = fig.add_axes([0.2, 0.1, 0.6, 0.03])
-axdelay2 = fig.add_axes([0.2, 0.15, 0.6, 0.03])
-axpitch = fig.add_axes([0.2, 0.05, 0.6, 0.03])
+ax_slider1 = fig.add_axes([0.2, 0.1, 0.6, 0.03])
+ax_slider1_val = fig.add_axes([0.81, 0.1, 0.1, 0.03])
+ax_slider2 = fig.add_axes([0.2, 0.05, 0.6, 0.03])
+ax_slider2_val = fig.add_axes([0.81, 0.05, 0.1, 0.03])
 ax_legend = fig.add_axes([0.03, 0.7, 0.2, 0.2])
 ax_navigator = fig.add_axes([0.03, 0.25, 0.25, 0.35])
 ax_navigator.set_xticks([])
@@ -100,41 +116,29 @@ ax_navigator.set_yticks([])
 x_parm = parms[display_x][0]
 y_parm = parms[display_y][0]
 x,y = np.meshgrid(x_parm, y_parm)
+print(x,y)
 xx,yy = x.ravel(), y.ravel()
 
 # Make horizontal sliders to control the extra parameters
-slider_1 = Slider(
-    ax=axdelay,
-    label= slider_1_parm,
-    valmin = min(parms[slider_1_parm][0]),
-    valmax = max(parms[slider_1_parm][0]),
-    valinit = init_slider_1,
-    valstep = parms[slider_1_parm][0],
-    color='lightgrey'
-)
-# make slider grayed out, as we should use it only for display
-rect_gray = Rectangle((0, 0), 3, 3, color=(0.5,0.5,0.5,0.7))
-axdelay.add_artist(rect_gray)
-
-slider_1c = Slider(
-    ax=axdelay2,
-    label= "delay_control",
+slider1 = Slider(
+    ax= ax_slider1,
+    label = slider1_parm,
     valmin = 0,
-    valmax = len(parms[slider_1_parm][0])-1,
-    valinit = 3,
+    valmax = len(parms[slider1_parm][0])-1,
+    valinit = 0,
     valstep = 1
 )
-def set_delay(val):
-    slider_1.set_val(parms[slider_1_parm][0][val])
+slider1.valtext.set_visible(False)
 
-slider_2 = Slider(
-    ax=axpitch,
-    label= slider_2_parm,
-    valmin = min(parms[slider_2_parm][0]),
-    valmax = max(parms[slider_2_parm][0]),
-    valinit = init_slider_2,
-    valstep = parms[slider_2_parm][0]#[1]-parms[slider_2_parm][0][0]
+slider2 = Slider(
+    ax = ax_slider2,
+    label= slider2_parm,
+    valmin = 0,
+    valmax = len(parms[slider2_parm][0])-1,
+    valinit = 0,
+    valstep = 1
 )
+slider2.valtext.set_visible(False)
 
 # color legend
 rect_red = Rectangle((0, 0.9), 0.1, 0.1, color='red')
@@ -151,7 +155,12 @@ ax_legend.axis('off')
 # The function to redraw the plot
 def update(val):
     ax.clear()
-    displaydata = data[:,:,slider_1_data.index(slider_1.val),slider_2_data.index(slider_2.val)]
+    if displaypreset == 1:
+        displaydata = data[:,:,slider1.val,slider2.val]
+    elif displaypreset == 2:
+        displaydata = data[slider1.val,slider2.val,:,:]
+    elif displaypreset == 3:
+        displaydata = data[slider1.val,:,:,slider2.val]
     # get analysis, must transpose (swap axes)
     sideband_div = np.transpose(displaydata[:,:,0]).ravel() 
     crests = np.transpose(displaydata[:,:,2]).ravel()
@@ -174,20 +183,24 @@ def update(val):
     ax.set_zlabel("sidebands")
     ax.set_zlim(0,10)
     ax.set_title('Sidebands analysis')
+    # sliders
+    ax_slider1_val.clear()
+    ax_slider1_val.axis('off')
+    ax_slider1_val.text(0.1, 0.1, str(parms[slider1_parm][0][slider1.val]))
+    ax_slider2_val.clear()
+    ax_slider2_val.axis('off')
+    ax_slider2_val.text(0.1, 0.1, str(parms[slider2_parm][0][slider2.val]))
     # navigator
-    global navigator_colors_t
     navigator_colors = np.ndarray((len(x_parm),len(y_parm),4))
     for i in range(len(colors)):
         navigator_colors[i%len(x_parm),int(i/len(x_parm))] = colors[i]
-    navigator_colors_t = navigator_colors
     navigator_colors = np.rot90(navigator_colors)
     ax_navigator.imshow(navigator_colors) 
     fig.canvas.draw_idle()
 
 # register the update function with each slider
-slider_2.on_changed(update)
-slider_1.on_changed(update)
-slider_1c.on_changed(set_delay)
+slider2.on_changed(update)
+slider1.on_changed(update)
 
 
 update(1)
@@ -195,15 +208,14 @@ def on_move(event):
     if (event.inaxes == ax_navigator):
         x = round(event.xdata)
         y = len(parms[display_y][0])-round(event.ydata)-1
-        #print(f'data coords {x} {y}  {parms[display_x][0][x]} {parms[display_y][0][y]}  {navigator_colors_t[x,y]}')
 
 def on_click(event):
     if (event.inaxes == ax_navigator):
         x = round(event.xdata)
         y = len(parms[display_y][0])-round(event.ydata)-1
-        #print(f'file test_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider_1.val*1000)}_gp{int(slider_2.val)}_cps400_display.png')
-        png_file = f'./data/{dataset}_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider_1.val*1000)}_gp{int(slider_2.val)}_cps400_display.png'
-        wav_file = f'./data/{dataset}_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider_1.val*1000)}_gp{int(slider_2.val)}_cps400_partikl.wav'
+        # NEEDS FIX for the different displaypresets
+        png_file = f'./data/{dataset}_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider1_data[slider1.val]*1000)}_gp{int(slider2_data[slider2.val])}_cps400_display.png'
+        wav_file = f'./data/{dataset}_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider1_data[slider1.val]*1000)}_gp{int(slider2_data[slider2.val])}_cps400_partikl.wav'
         print(png_file)
         if not os.path.isfile(png_file):
             partikkelscore = png_file[:-11]+'analyze.sco'

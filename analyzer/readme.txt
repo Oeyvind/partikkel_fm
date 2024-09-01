@@ -3,11 +3,12 @@ To use analyzer:
 python generate_and_analyze.py dataset mode nosave
 - dataset: set the base filename for generated files 
 - mode can be 'csound' or 'spectrogram'
-- the third argument can be used to skip generation of sound files (for debugging)
-  - which again makes the spectrogram command invalid, as it has not soundfiles on which to make the spectrogram
-- Normal operation example (run both one after another):
+- the third argument can be used to generate sound files (for debugging)
+  - usually this is not needed, as we can generate sound files and spectrograms on demand
+  - when clicking on a square in the navigator (2d display), the program will open spectrogram and wave file
+  - if the sound spectrogram does not exist, we will synthesize the sound from score and generate spectrogram 
+- Normal operation example:
   python generate_and_analyze.py test csound
-  python generate_and_analyze.py test spectrogram
   - will render audio with the parameter settings for graindurs, modindices, delays, grainpitches
 - set the parameters in the file {dataset}_parameters.py
   - see for example test_parameters.py
@@ -21,8 +22,6 @@ python generate_and_analyze.py dataset mode nosave
     - crest value 
       - the first line has global crest for the sound
       - other lines have average crest over all frequency bands for that sideband division
-- an additional argument (any) will also save sound files and spectrum plots for each file
-  python generate_and_analyze.py filename True
 
 python display.py dataset mode
 - will show a 3d plot of the analysis data
@@ -30,3 +29,10 @@ python display.py dataset mode
   - analyze will read all files, create the data array (and save it to file)
   - saved will just read the data array from file
   - both modes will display the 3d plot (use analyze the first run, and then saved for later runs where the data has not changed)
+
+To run both generation and display:
+  python run_all.py {dataset}
+  for example
+  python run_all.py test
+For subsequent viewing of the generated dataset, use
+  python display test saved
