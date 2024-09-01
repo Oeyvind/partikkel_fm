@@ -9,22 +9,25 @@ from collections import OrderedDict
 import json
 import numpy as np
 import concurrent.futures
-pool = concurrent.futures.ThreadPoolExecutor(max_workers=20)
+pool = concurrent.futures.ThreadPoolExecutor(max_workers=15)
 
 # command line args
 dataset = sys.argv[1]
-
 if not sys.argv[2] in ('csound', 'spectrogram'):
    print("second argument must be 'csound' or 'spectrogram'")
    sys.exit()
 else:
    mode = sys.argv[2]
 
-saveaudio = True
-# if any second argument on the command line, disable save audio files and graphics
+saveaudio = False
+# if any second argument on the command line, enable save audio files and graphics
 # then it will not be possible to do 'spectrogram', and the navigator in the 3d display will not work
 if len(sys.argv) > 3: 
-   saveaudio = False
+   saveaudio = True
+   print('Are you sure you want to save thousands of sound files?')
+   yn = input()
+   if yn not in ['y', 'Y']:
+     sys.exit()  
 
 # set defult p-fields
 defaults = OrderedDict()
@@ -65,7 +68,7 @@ def render(filename_root, scorestring, mode, saveaudio, filenum, numfiles):
     if saveaudio:
       err1 = subprocess.run('csound partikkel_fm_feed_analyze.orc {} -o{} -m0 -d'.format(partikkelscore, partikkelwav),stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     else:
-      err1 = subprocess.run('csound partikkel_fm_feed_analyze.orc {} -n -m0 -d'.format(partikkelscore))
+      err1 = subprocess.run('csound partikkel_fm_feed_analyze.orc {} -n -m0 -d'.format(partikkelscore),stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
   if mode == 'spectrogram':
     err2 = subprocess.run('python ../spectrogram_and_waveform.py {} {} {} {} {}'.format(filename_root, partikkelwav, maxfreq, defaults["cps"], "nodisplay"))
   if filenum%100 == 0:

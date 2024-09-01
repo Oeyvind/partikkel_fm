@@ -138,7 +138,7 @@ instr 2
   ; expected number of sidebands, and
   ; sum of crest values for each N-subdivision present 
   kSidebands_present[] init imax_sidebands+1, 3
-  kMags[0] = 0 ; HERE BE DRAGONS, workaround for DC offset in crest calculation
+  kMags[0] = 0 ; workaround for DC offset in crest calculation
   kavg_amp_0 = sumarray(kMags)/ibins
   kmax_amp_0,kdx maxarray kMags
   ;printk2 kdx,2

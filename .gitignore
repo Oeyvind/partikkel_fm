@@ -1,6 +1,7 @@
 *.wav
 *.reapeaks
 *.pdf
+*.pyc
 score_fm.sco
 score_partikkel.sco
 analyzer/data/*

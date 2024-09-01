@@ -10,7 +10,7 @@ from  matplotlib.patches import Rectangle
 from matplotlib.backend_bases import MouseButton
 import subprocess
 import os
-
+ 
 # read audio analysis files and display analysis data in 3d
 
 # select dataset, e.g. 'test_'
@@ -205,7 +205,13 @@ def on_click(event):
         png_file = f'./data/{dataset}_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider_1.val*1000)}_gp{int(slider_2.val)}_cps400_display.png'
         wav_file = f'./data/{dataset}_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider_1.val*1000)}_gp{int(slider_2.val)}_cps400_partikl.wav'
         print(png_file)
-        #os.startfile(filename, 'open')
+        if not os.path.isfile(png_file):
+            partikkelscore = png_file[:-11]+'analyze.sco'
+            print(partikkelscore)
+            print('running: ', 'csound partikkel_fm_feed_analyze.orc {} -o{} -m0 -d'.format(partikkelscore, wav_file))
+            err1 = subprocess.run('csound partikkel_fm_feed_analyze.orc {} -o{} -m0 -d'.format(partikkelscore, wav_file))
+            print(wav_file)
+            err2 = subprocess.run('python ../spectrogram_and_waveform.py {} {} {} {} {}'.format(png_file[:-12], wav_file, 5000, 400, "nodisplay"))
         platform = sys.platform
         print(platform)
         if platform == 'darwin':
