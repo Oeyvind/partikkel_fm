@@ -107,7 +107,8 @@ instr 1
 endin
 
 instr 2
-  Sfilename strget p4
+  icps = p4;400 ; CHANGE TO p4
+  Sfilename strget p5;p4; p5
   a1  chnget "audio"
   ifftsize = 8192
   ibins init ifftsize/2
@@ -121,7 +122,6 @@ instr 2
     kMags[] = mags(kFFT)
     kcnt = 0
   endif
-  icps = 400
   ihz_per_bin = (sr/ifftsize)
   ibin = round(icps/ihz_per_bin)
   kcps init icps
@@ -196,7 +196,7 @@ instr 2
 
   kwritefile init 0
   if (kdiv == imax_sidebands+1) && (kwritefile > 0) then
-    printarray kSidebands_present
+    ;printarray kSidebands_present
     kwritefile = 0
     gkAnalysis[] = kSidebands_present
     Sscoreline sprintf {{i3 0 0.1 "%s"}}, Sfilename
@@ -204,7 +204,7 @@ instr 2
   endif
 
   ; reset for next test
-  kmetro metro 1, 0.000001
+  kmetro metro 2, 0.000001
   if kmetro > 0 then
    kdiv = 1
    kwritefile = 1
@@ -212,20 +212,23 @@ instr 2
   endin
 
   instr 3
-  ; write analysis to file
-  Sfilename strget p4
-  Sfilename strcat Sfilename, "_analyze.txt"
-  ilen = lenarray(gkAnalysis)
-  ;print ilen
-  p3 = 1/kr
-  kndx = 0
-  while kndx < ilen do
-    ksig1 = gkAnalysis[kndx][0]
-    ksig2 = gkAnalysis[kndx][1]
-    ksig3 = gkAnalysis[kndx][2]
-    dumpk3 ksig1, ksig2, ksig3, Sfilename, 8, 0
-    kndx += 1
-  od
-
+  ;print p1, p2, p3
+  if p2 > 1.1 then
+    ; write analysis to file
+    Sfilename strget p4
+    Sfilename strcat Sfilename, "_analyze.txt"
+    ilen = lenarray(gkAnalysis)
+    ;print ilen
+    p3 = 1/kr
+    kndx = 0
+    while kndx < ilen do
+      ksig1 = gkAnalysis[kndx][0]
+      ksig2 = gkAnalysis[kndx][1]
+      ksig3 = gkAnalysis[kndx][2]
+      dumpk3 ksig1, ksig2, ksig3, Sfilename, 8, 0
+      kndx += 1
+      ;printk2 kndx
+    od
+  endif
   endin
 

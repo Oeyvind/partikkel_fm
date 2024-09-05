@@ -9,7 +9,7 @@ from collections import OrderedDict
 import json
 import numpy as np
 import concurrent.futures
-pool = concurrent.futures.ThreadPoolExecutor(max_workers=15)
+pool = concurrent.futures.ThreadPoolExecutor(max_workers=25)
 
 # command line args
 dataset = sys.argv[1]
@@ -62,8 +62,7 @@ def render(filename_root, scorestring, mode, saveaudio, filenum, numfiles):
   if mode == 'csound':
     partikkelscore = filename_root+'_analyze.sco'
     partikkelscorefile = open(partikkelscore, "w")
-    partikkelscorefile.write(scorestring) #synthesize
-    partikkelscorefile.write('\ni2 0 {} "{}"'.format(defaults["dur"], filename_root)) # analyze
+    partikkelscorefile.write(scorestring) #synthesize and analyze
     partikkelscorefile.close()
     if saveaudio:
       err1 = subprocess.run('csound partikkel_fm_feed_analyze.orc {} -o{} -m0 -d'.format(partikkelscore, partikkelwav),stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
@@ -94,10 +93,12 @@ for graindur in p.graindurs:
                                                            int(defaults["cps"]))
 
     
-        scorestring = 'i1 0 '
+        scorestring = 'i1 0 ' # synthesize
         if mode == 'csound':
           for key,value in defaults.items():
             scorestring +='{} '.format(value)
+        scorestring += '\ni2 0 {} {} "{}"'.format(defaults["dur"], defaults["cps"], filename_root) # analyze
+        print(scorestring)
         filenum += 1
         if filenum%100 == 0:
           print("\n***\nprocessing file {} of {}\n".format(filenum, numfiles))

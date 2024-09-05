@@ -5,11 +5,13 @@ import numpy as np
 np.set_printoptions(suppress=True, precision=2)
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Button, Slider
+from matplotlib.widgets import CheckButtons, Slider
 from  matplotlib.patches import Rectangle
 from matplotlib.backend_bases import MouseButton
 import subprocess
 import os
+from threading import Thread
+import time
  
 # read audio analysis files and display analysis data in 3d
 
@@ -107,6 +109,7 @@ ax_slider1 = fig.add_axes([0.2, 0.1, 0.6, 0.03])
 ax_slider1_val = fig.add_axes([0.81, 0.1, 0.1, 0.03])
 ax_slider2 = fig.add_axes([0.2, 0.05, 0.6, 0.03])
 ax_slider2_val = fig.add_axes([0.81, 0.05, 0.1, 0.03])
+#ax_checkbox = fig.add_axes([0.91, 0.05, 0.1, 0.1])
 ax_legend = fig.add_axes([0.03, 0.7, 0.2, 0.2])
 ax_navigator = fig.add_axes([0.03, 0.25, 0.25, 0.35])
 ax_navigator.set_xticks([])
@@ -116,7 +119,6 @@ ax_navigator.set_yticks([])
 x_parm = parms[display_x][0]
 y_parm = parms[display_y][0]
 x,y = np.meshgrid(x_parm, y_parm)
-print(x,y)
 xx,yy = x.ravel(), y.ravel()
 
 # Make horizontal sliders to control the extra parameters
@@ -139,6 +141,14 @@ slider2 = Slider(
     valstep = 1
 )
 slider2.valtext.set_visible(False)
+'''
+check = CheckButtons(
+    ax=ax_checkbox,
+    labels=['run_d','run_p'],
+    actives=[False, False],
+    label_props={'color': ['black','red']},
+)
+'''
 
 # color legend
 rect_red = Rectangle((0, 0.9), 0.1, 0.1, color='red')
@@ -202,7 +212,6 @@ def update(val):
 slider2.on_changed(update)
 slider1.on_changed(update)
 
-
 update(1)
 def on_move(event):
     if (event.inaxes == ax_navigator):
@@ -232,9 +241,52 @@ def on_click(event):
         elif platform in ['win64', 'win32']:
             subprocess.call(('cmd', '/C', 'start', '', png_file))
             subprocess.call(('cmd', '/C', 'start', '', wav_file))
+'''
+run_slider_direction = [1,1]
+runslider = [False, False]
+def update_slider(v):
+    print(v)
+    global run_slider_direction, runslider
+    if v == 'run_d':
+        slid = slider1
+        sindx = 0
+        run = runslider[0]
+    if v == 'run_p':
+        slid = slider2
+        sindx = 1
+        run = runslider[1]
+    if run == True:
+        if slid.val >= slid.valmax:
+            run_slider_direction[sindx] = -1
+        if slid.val <= slid.valmin:
+            run_slider_direction[sindx] = 1
+        slid.val += run_slider_direction[sindx]
+        slid.set_val(slid.val)
+        update()
+        print(slid.val)
+    if run != -1:
+        time.sleep(1)
+        update_slider(v)
 
+slider_run1 = Thread(target=update_slider, args=['run_d'])
+slider_run2 = Thread(target=update_slider, args=['run_p'])
+slider_run1.start()
+slider_run2.start()
+
+def run_slider(v):
+    global runslider
+    if v == 'run_d': 
+        runslider[0] = check.get_status()[0]
+    if v == 'run_p': 
+        runslider[1] = check.get_status()[1]
+
+check.on_clicked(run_slider)
+'''
 binding_id = plt.connect('motion_notify_event', on_move)
 plt.connect('button_press_event', on_click)
-
+#ax_checkbox.axis('off')
 ax0.axis('off')
 plt.show()
+#runslider = [-1,-1]
+#slider_run1.join()
+#slider_run2.join()
