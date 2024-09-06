@@ -98,7 +98,6 @@ for graindur in p.graindurs:
           for key,value in defaults.items():
             scorestring +='{} '.format(value)
         scorestring += '\ni2 0 {} {} "{}"'.format(defaults["dur"], defaults["cps"], filename_root) # analyze
-        print(scorestring)
         filenum += 1
         if filenum%100 == 0:
           print("\n***\nprocessing file {} of {}\n".format(filenum, numfiles))

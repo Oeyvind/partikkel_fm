@@ -39,20 +39,22 @@ def get_timbre_analysis(f, sideband_thresh):
     timbre_data = []
     for line in f.readlines():
         timbre_data.append(line.rstrip('\n').split('\t'))
+    dc_amp = timbre_data[0][0]
+    centroid = timbre_data[0][1]
     crest_global = timbre_data[0][2]
     sideband_div = 1
     for i in range(1,len(timbre_data)):
         if float(timbre_data[i][0]) > float(timbre_data[i][1])*sideband_thresh:
             sideband_div = i
     crest_sideband = timbre_data[sideband_div][2]
-    return sideband_div, crest_sideband, crest_global
+    return sideband_div, crest_sideband, dc_amp, centroid, crest_global
 
 # get data
 if mode == "saved":
     data = np.load(f"{dataset}_data_array.npy")
 else:
     path = f"./data/"
-    data = np.ndarray([len(p.graindurs), len(p.modindices), len(p.delays), len(p.grainpitches), 3])
+    data = np.ndarray([len(p.graindurs), len(p.modindices), len(p.delays), len(p.grainpitches), 5])
     filenum = 0
     numfiles = len(p.graindurs) * len(p.modindices) * len(p.delays) * len(p.grainpitches)
     for i in range(len(p.graindurs)):
@@ -173,16 +175,20 @@ def update(val):
         displaydata = data[slider1.val,:,:,slider2.val]
     # get analysis, must transpose (swap axes)
     sideband_div = np.transpose(displaydata[:,:,0]).ravel() 
-    crests = np.transpose(displaydata[:,:,2]).ravel()
     sideband_crests = np.transpose(displaydata[:,:,1]).ravel()
+    dc_amp = np.transpose(displaydata[:,:,2]).ravel()
+    centroid = np.transpose(displaydata[:,:,3]).ravel()
+    crest = np.transpose(displaydata[:,:,4]).ravel()
     width = (x_parm[1]-x_parm[0])*0.9
     depth = (y_parm[1]-y_parm[0])*0.9
-    colors = np.zeros((len(crests),4))
-    red = ((crests/max(crests))*0.9)+0.1
+    colors = np.zeros((len(crest),4))
+    red = abs(dc_amp)/max(np.abs(dc_amp))#((crest/max(crest))*0.9)+0.1
     blue = ((sideband_crests/max(sideband_crests))*0.8)+0.2
-    green = 0.5#0.3-(red+blue)*0.1
+    #green = abs(dc_amp)/max(np.abs(dc_amp)) #0.5
+    green = centroid/max(centroid) #/ (1+abs(dc_amp))
+    #green = centroid/max(centroid)
     colors[:,0] = red
-    colors[:,1] = 0.2#green #0.2 # 
+    colors[:,1] = green #0.2 # 
     colors[:,2] = blue
     colors[:,3] = 1 # opacity
     ax.bar3d(xx, yy, 0, width, depth, sideband_div, color=colors)

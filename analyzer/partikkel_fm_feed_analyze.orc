@@ -120,6 +120,7 @@ instr 2
     kWin[] window kIn
     kFFT[] = rfft(kWin)
     kMags[] = mags(kFFT)
+    kDC = kMags[0] ; record any DC component
     kcnt = 0
   endif
   ihz_per_bin = (sr/ifftsize)
@@ -141,11 +142,11 @@ instr 2
   kMags[0] = 0 ; workaround for DC offset in crest calculation
   kavg_amp_0 = sumarray(kMags)/ibins
   kmax_amp_0,kdx maxarray kMags
-  ;printk2 kdx,2
-  ;printk2 kmax_amp_0, 5 
-  ;printk2 kavg_amp_0, 10
   kcrest divz kmax_amp_0, kavg_amp_0, -1
-  ;printk2 kcrest, 15
+  kmetro init 0
+  kcentroid centroid a1, kmetro, ifftsize
+  kSidebands_present[0][0] = kDC
+  kSidebands_present[0][1] = kcentroid
   kSidebands_present[0][2] = kcrest
 
   kdiv init 99 ; not to do the analysis at init, but wait for the first metro tick
