@@ -153,15 +153,18 @@ check = CheckButtons(
 '''
 
 # color legend
-rect_red = Rectangle((0, 0.9), 0.1, 0.1, color='red')
-ax_legend.add_artist(rect_red)
-ax_legend.text(0.15, 0.9, "Global crest", dict(size=8))
-rect_blue = Rectangle((0, 0.7), 0.1, 0.1, color='blue')
+rect_blue = Rectangle((0, 0.9), 0.1, 0.1, color='blue')
 ax_legend.add_artist(rect_blue)
-ax_legend.text(0.15, 0.7, "Sideband crest", dict(size=8))
-rect_black = Rectangle((0, 0.5), 0.1, 0.1, color=(0.2,0.2,0.2))
-ax_legend.add_artist(rect_black)
-ax_legend.text(0.15, 0.5, "Probably noisy", dict(size=8))
+ax_legend.text(0.15, 0.9, "Sideband crest", dict(size=8))
+rect_green = Rectangle((0, 0.7), 0.1, 0.1, color='green')
+ax_legend.add_artist(rect_green)
+ax_legend.text(0.15, 0.7, "Centroid", dict(size=8))
+rect_red = Rectangle((0, 0.5), 0.1, 0.1, color='red')
+ax_legend.add_artist(rect_red)
+ax_legend.text(0.15, 0.5, "DC component", dict(size=8))
+#rect_black = Rectangle((0, 0.5), 0.1, 0.1, color=(0.2,0.2,0.2))
+#ax_legend.add_artist(rect_black)
+#ax_legend.text(0.15, 0.5, "Probably noisy", dict(size=8))
 ax_legend.axis('off')
 
 # The function to redraw the plot
@@ -182,16 +185,14 @@ def update(val):
     width = (x_parm[1]-x_parm[0])*0.9
     depth = (y_parm[1]-y_parm[0])*0.9
     colors = np.zeros((len(crest),4))
-    red = abs(dc_amp)/max(np.abs(dc_amp))#((crest/max(crest))*0.9)+0.1
-    blue = ((sideband_crests/max(sideband_crests))*0.8)+0.2
-    #green = abs(dc_amp)/max(np.abs(dc_amp)) #0.5
-    green = centroid/max(centroid) #/ (1+abs(dc_amp))
-    #green = centroid/max(centroid)
+    red = (np.power(abs(dc_amp)/max(np.abs(dc_amp)),2)*0.9)+0.1
+    blue = (np.power((sideband_crests/max(sideband_crests)),2)*0.9)+0.1
+    green = (np.power(centroid/max(centroid),2)*0.6)+0.1 
     colors[:,0] = red
     colors[:,1] = green #0.2 # 
     colors[:,2] = blue
     colors[:,3] = 1 # opacity
-    ax.bar3d(xx, yy, 0, width, depth, sideband_div, color=colors)
+    ax.bar3d(xx, yy, 0, width, depth, sideband_div, color=colors, shade=True)
     ax.set_xticks(list(x_parm[i] for i in range(0,len(x_parm),4)))
     ax.set_yticks(list(y_parm[i] for i in range(0,len(y_parm),4)))
     ax.set_xlabel(display_x) 

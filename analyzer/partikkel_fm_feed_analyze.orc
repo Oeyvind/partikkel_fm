@@ -144,7 +144,7 @@ instr 2
   kmax_amp_0,kdx maxarray kMags
   kcrest divz kmax_amp_0, kavg_amp_0, -1
   kmetro init 0
-  kcentroid centroid a1, kmetro, ifftsize
+  kcentroid centroid butterhp(a1,3), kmetro, ifftsize ; might need to implement this "manually" on the fft where I can zero out the DC
   kSidebands_present[0][0] = kDC
   kSidebands_present[0][1] = kcentroid
   kSidebands_present[0][2] = kcrest
