@@ -120,7 +120,7 @@ instr 2
     kWin[] window kIn
     kFFT[] = rfft(kWin)
     kMags[] = mags(kFFT)
-    kDC = kMags[0] ; record any DC component
+    kDC = kMags[0] ; DC component
     kcnt = 0
   endif
   ihz_per_bin = (sr/ifftsize)
@@ -138,16 +138,17 @@ instr 2
   ; number of sidebands found,
   ; expected number of sidebands, and
   ; sum of crest values for each N-subdivision present 
-  kSidebands_present[] init imax_sidebands+1, 3
+  kAnalysis[] init imax_sidebands+1, 3
   kMags[0] = 0 ; workaround for DC offset in crest calculation
   kavg_amp_0 = sumarray(kMags)/ibins
   kmax_amp_0,kdx maxarray kMags
+  kDC_relative = kDC/kavg_amp_0
   kcrest divz kmax_amp_0, kavg_amp_0, -1
   kmetro init 0
   kcentroid centroid butterhp(a1,3), kmetro, ifftsize ; might need to implement this "manually" on the fft where I can zero out the DC
-  kSidebands_present[0][0] = kDC
-  kSidebands_present[0][1] = kcentroid
-  kSidebands_present[0][2] = kcrest
+  kAnalysis[0][0] = kDC_relative
+  kAnalysis[0][1] = kcentroid
+  kAnalysis[0][2] = kcrest
 
   kdiv init 99 ; not to do the analysis at init, but wait for the first metro tick
   kBand[] init 1 ; just need it present at init, size will change for each subdiv 
@@ -161,7 +162,7 @@ instr 2
       kexpected_num_sidebands += kdiv*(2^koct_count) ; expected number of sidebands in the next octaves
       koct_count += 1
     od
-    kSidebands_present[kdiv][1] = kexpected_num_sidebands ; record the expected number of sidebands (so we can take a percentage later)
+    kAnalysis[kdiv][1] = kexpected_num_sidebands ; record the expected number of sidebands (so we can take a percentage later)
     kcps = icps
     kbandwidth = kcps/kdiv
     kbins = round(kbandwidth/ihz_per_bin)
@@ -187,17 +188,17 @@ instr 2
       ksideband_counter += ksideband_present
       ;printk2 ksideband_counter
       if ksideband_present > 0 then
-        kSidebands_present[kdiv][0] = ksideband_counter;/kdiv
-        ;printarray kSidebands_present
+        kAnalysis[kdiv][0] = ksideband_counter;/kdiv
+        ;printarray kAnalysis
       endif
-      kSidebands_present[kdiv][2] = ksideband_crest
+      kAnalysis[kdiv][2] = ksideband_crest
     od
   kdiv +=1
   od
 
   kwritefile init 0
   if (kdiv == imax_sidebands+1) && (kwritefile > 0) then
-    ;printarray kSidebands_present
+    ;printarray kAnalysis
     kwritefile = 0
     gkAnalysis[] = kSidebands_present
     Sscoreline sprintf {{i3 0 0.1 "%s"}}, Sfilename

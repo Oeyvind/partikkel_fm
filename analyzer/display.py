@@ -185,9 +185,10 @@ def update(val):
     width = (x_parm[1]-x_parm[0])*0.9
     depth = (y_parm[1]-y_parm[0])*0.9
     colors = np.zeros((len(crest),4))
-    red = (np.power(abs(dc_amp)/max(np.abs(dc_amp)),2)*0.9)+0.1
-    blue = (np.power((sideband_crests/max(sideband_crests)),2)*0.9)+0.1
-    green = (np.power(centroid/max(centroid),2)*0.6)+0.1 
+    red = ((crest/max(crest))*0.9)+0.1# (np.power(abs(dc_amp)/max(np.abs(dc_amp)),2)*0.9)+0.1
+    #red = (np.power(abs(dc_amp)/max(np.abs(dc_amp)),1)*0.9)+0.1
+    blue = (np.power((sideband_crests/max(sideband_crests)),1)*0.9)+0.1
+    green = (np.power(centroid/max(centroid),2)*0.2)+0.1 
     colors[:,0] = red
     colors[:,1] = green #0.2 # 
     colors[:,2] = blue
