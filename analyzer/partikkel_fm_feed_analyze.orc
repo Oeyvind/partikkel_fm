@@ -107,130 +107,218 @@ instr 1
 endin
 
 instr 2
-  icps = p4;400 ; CHANGE TO p4
-  Sfilename strget p5;p4; p5
+  icps = p4
+  Sfilename strget p5
   a1  chnget "audio"
+  ;a1 rnd31 1,1
+  ;a1 oscil 0.9, 400
+  ;a1 += 0.5
+  ;a2 oscil 0.17, 800
+  ;a1 = a1+a2
+  /*
+  a2 oscil 0.5, 400
+  a1 rnd31 1,1
+  a1 butterbp a1, 500, 100
+  a1 = a1+a2
+*/
   ifftsize = 8192
   ibins init ifftsize/2
   kIn[] init ifftsize
-  kcnt init 0
-  kIn shiftin a1
-  kcnt += ksmps
-  if kcnt == ifftsize then
-    kWin[] window kIn
-    kFFT[] = rfft(kWin)
-    kMags[] = mags(kFFT)
-    kDC = kMags[0] ; DC component
-    kcnt = 0
-  endif
   ihz_per_bin = (sr/ifftsize)
-  ibin = round(icps/ihz_per_bin)
-  kcps init icps
+  print ihz_per_bin
+  ktime timeinsts
+  kcentrig metro 100
+  kcentroid_test centroid butterhp(a1,3), kcentrig, ifftsize ; might need to implement this "manually" on the fft where I can zero out the DC
 
   ; tunable parameters
   ioctaves = 2
   imax_sidebands = 10 ; check sideband amplitudes at subdivisions of the fundamental frequency for all subdivisions from 1 to N
   ; report if *all* ((more than 70%) of the frequency bands have an amplitude higher than a threshold
-  isideband_threshold = 1 ; sideband amplitude threshold, relative to average bin amp in sideband 
-  ;isideband_percentage = 0.7 ; percentage of sidebands that must be present for the subdivision to count as present
+  isideband_threshold = 1.2 ; sideband amplitude threshold, relative to average bin amp in sideband 
   
   ; array holds 
-  ; number of sidebands found,
-  ; expected number of sidebands, and
-  ; sum of crest values for each N-subdivision present 
-  kAnalysis[] init imax_sidebands+1, 3
-  kMags[0] = 0 ; workaround for DC offset in crest calculation
-  kavg_amp_0 = sumarray(kMags)/ibins
-  kmax_amp_0,kdx maxarray kMags
-  kDC_relative = kDC/kavg_amp_0
-  kcrest divz kmax_amp_0, kavg_amp_0, -1
-  kmetro init 0
-  kcentroid centroid butterhp(a1,3), kmetro, ifftsize ; might need to implement this "manually" on the fft where I can zero out the DC
-  kAnalysis[0][0] = kDC_relative
-  kAnalysis[0][1] = kcentroid
-  kAnalysis[0][2] = kcrest
+  ; number of sidebands found, expected number of sidebands, and average crest values for each N-subdivision present 
+  ; First line holds global analysis parameters:
+  ; dc, crest, centroid, rolloff
+  kAnalysis[] init imax_sidebands+1, 4
 
-  kdiv init 99 ; not to do the analysis at init, but wait for the first metro tick
-  kBand[] init 1 ; just need it present at init, size will change for each subdiv 
-  
-  while kdiv <= imax_sidebands do 
-    ;Sbin sprintfk "*** *** subdiv: %i", kdiv
-    ;puts Sbin, kdiv
-    kexpected_num_sidebands = kdiv ; expected number of sidebands in the first octave
-    koct_count = 1
-    while koct_count < ioctaves do
-      kexpected_num_sidebands += kdiv*(2^koct_count) ; expected number of sidebands in the next octaves
-      koct_count += 1
-    od
-    kAnalysis[kdiv][1] = kexpected_num_sidebands ; record the expected number of sidebands (so we can take a percentage later)
-    kcps = icps
-    kbandwidth = kcps/kdiv
-    kbins = round(kbandwidth/ihz_per_bin)
-    ;printk2 kbandwidth, 10
-    ;printk2 kbins, 20
-    ksideband_counter = 0
-    ksideband_crest = 0
-    while kcps < (icps*(2^ioctaves)-(ihz_per_bin/2)) do ; look for sidebands within two octaves above the fundamental
-      kcps += icps/kdiv
-      kbin = round(kcps/ihz_per_bin)
-      ;Sbininfo sprintfk "bin:%i, fq:%f, amp:%f", kbin, kbin*ihz_per_bin, kMags[kbin]
-      ;puts Sbininfo, kbin
-      reinit bandarray
-      bandarray:
-      kBand[] slicearray kMags, i(kbin)-int(i(kbins)/2), i(kbin)+round(i(kbins)/2)
-      ;printarray kBand
-      rireturn
-      kavg_amp = sumarray(kBand)/(kbins)
-      ;Sbininfo_avg sprintfk "    avg amp in band:%f,", kavg_amp
-      ;puts Sbininfo_avg, kbin
-      ksideband_crest += kMags[kbin]/kavg_amp
-      ksideband_present = kMags[kbin]/kavg_amp > isideband_threshold ? 1 : 0
-      ksideband_counter += ksideband_present
-      ;printk2 ksideband_counter
-      if ksideband_present > 0 then
-        kAnalysis[kdiv][0] = ksideband_counter;/kdiv
-        ;printarray kAnalysis
-      endif
-      kAnalysis[kdiv][2] = ksideband_crest
-    od
-  kdiv +=1
-  od
-
+  ; wait for trig before doing analysis
+  kdiv init 99 
   kwritefile init 0
-  if (kdiv == imax_sidebands+1) && (kwritefile > 0) then
-    ;printarray kAnalysis
-    kwritefile = 0
-    gkAnalysis[] = kSidebands_present
-    Sscoreline sprintf {{i3 0 0.1 "%s"}}, Sfilename
-    scoreline Sscoreline, 1
-  endif
+  kBand[] init 1 ; just need it present at init, size will change for each subdiv 
 
-  ; reset for next test
-  kmetro metro 2, 0.000001
+  ; trigger analysis
+  kmetro metro 1, 0.5 ; after 0.5 and 1.5 secs
   if kmetro > 0 then
    kdiv = 1
    kwritefile = 1
   endif
+
+  if kdiv == 1 then
+    kcnt init 0
+    kIn shiftin a1
+    kframe_ready = 0
+    kcnt += ksmps
+    if kcnt == ifftsize then
+      kWin[] window kIn
+      kFFT[] = rfft(kWin)
+      kMags[] = mags(kFFT)
+      kDC = abs(kMags[0]) ; DC component
+      kcnt = 0
+      kframe_ready = 1
+    endif
+  
+    if kframe_ready > 0 then 
+      kMags[0] = 0 ; workaround for DC offset in crest calculation
+      kMags[1] = 0 ; also zero the seconde bin, since there will be a leak from the first one 
+      ksum_amp = sumarray(kMags)
+      kavg_amp_0 = ksum_amp/ibins
+      kmax_amp_0,kdx maxarray kMags
+      kDC_relative divz kDC, kavg_amp_0, -1 ; dc relative to overall amp
+      
+      kcrest divz kmax_amp_0, kavg_amp_0, -1 ; spectral crest
+
+      kcentroid = 0
+      kndx_moments = 0
+      while kndx_moments < (ifftsize/2) do
+        kcentroid += kMags[kndx_moments]*(ihz_per_bin*kndx_moments)
+        kndx_moments += 1
+      od
+      kcentroid /= (kavg_amp_0*ibins)
+
+      irolloff_thresh = 0.95
+      krolloff_fq = 0
+      krolloff_amp = 0
+      kndx_moments = 0
+      while kndx_moments < (ifftsize/2) do
+        krolloff_amp += kMags[kndx_moments]
+        if krolloff_amp < (ksum_amp*irolloff_thresh) then
+          krolloff_fq = kndx_moments*ihz_per_bin
+        endif
+        kndx_moments += 1
+      od
+      ;printk2 krolloff_fq, 20
+
+      /*
+      ; Tried these before too, and I do not seem to get anything useful out of them
+      kspread = 0
+      kndx_moments = 0
+      while kndx_moments < (ifftsize/2) do
+        kspread += kMags[kndx_moments]*(((ihz_per_bin*kndx_moments)-kcentroid)^2)
+        kndx_moments += 1
+      od
+      kspread = kspread^0.5
+
+      kskewness = 0
+      kndx_moments = 0
+      while kndx_moments < (ifftsize/2) do
+        kskewness += kMags[kndx_moments]*(((ihz_per_bin*kndx_moments)-kcentroid)^3)
+        kndx_moments += 1
+      od
+      kskewness divz kskewness, kspread^3, 0
+
+      ;kflatness = 1
+      ;kndx_moments = 0
+      ;while kndx_moments < (ifftsize/2) do
+      ;  kflatness *= kMags[kndx_moments]*0.1
+      ;  ;printk2 kflatness, 20
+      ;  kndx_moments += 1
+      ;od
+      ;kflatness = (kflatness/kavg_amp_0)^(1/(ifftsize/2))
+      
+      kMags += 0.1 ; workaround for flatness calculation
+      kflatness	divz exp(sumarray(log(kMags))/ibins),  kavg_amp_0, 0
+      if qnan(kflatness) > 0 then
+        kflatness = -1
+      endif
+      ;kflatness = kflatness^0.3
+      printk2 kflatness, 10
+      */
+
+      kAnalysis[0][0] = kDC_relative
+      kAnalysis[0][1] = kcrest
+      kAnalysis[0][2] = kcentroid
+      kAnalysis[0][3] = krolloff_fq
+
+      while kdiv <= imax_sidebands do 
+        ;Sbin sprintfk "*** *** subdiv: %i", kdiv
+        ;puts Sbin, kdiv
+
+        kexpected_num_sidebands = kdiv ; expected number of sidebands in the first octave
+        koct_count = 1
+        while koct_count < ioctaves do
+          kexpected_num_sidebands += kdiv*(2^koct_count) ; expected number of sidebands in the next octaves
+          koct_count += 1
+        od
+
+        kAnalysis[kdiv][1] = kexpected_num_sidebands ; record the expected number of sidebands (so we can take a percentage later)
+        kcps = icps
+        kbandwidth = kcps/kdiv
+        kbins = round(kbandwidth/ihz_per_bin)
+        ;printk2 kbandwidth, 10
+        ;printk2 kbins, 20
+        ksideband_counter = 0
+        ksideband_crest = 0
+        while kcps < (icps*(2^ioctaves)-(ihz_per_bin/2)) do ; look for sidebands within two octaves above the fundamental
+          kcps += icps/kdiv
+          kbin = round(kcps/ihz_per_bin)
+          ;Sbininfo sprintfk "bin:%i, fq:%f, amp:%f", kbin, kbin*ihz_per_bin, kMags[kbin]
+          ;puts Sbininfo, kbin
+          reinit bandarray
+          bandarray:
+            ; bandwidth equals distance between sidebands
+            ; get all bins within half the bandwidth above and below the center freq for the sideband
+            kBand[] slicearray kMags, i(kbin)-int(i(kbins)/2), i(kbin)+round(i(kbins)/2)
+            ;printarray kBand
+          rireturn
+          kavg_amp = sumarray(kBand)/(kbins)
+          ;Sbininfo_avg sprintfk "    avg amp in band:%f,", kavg_amp
+          ;puts Sbininfo_avg, kbin
+          ksideband_crest += kMags[kbin]/kavg_amp
+          ksideband_present = kMags[kbin]/kavg_amp > isideband_threshold ? 1 : 0
+          ksideband_counter += ksideband_present
+        od
+        kAnalysis[kdiv][0] = ksideband_counter ; number of sidebands found
+        kAnalysis[kdiv][2] = ksideband_crest ; spectral crest within this sideband
+      kdiv +=1
+      od
+
+      if kwritefile > 0 then
+        ;printarray kAnalysis
+        kwritefile = 0
+        gkAnalysis[] = kAnalysis
+        Sscoreline sprintf {{i3 0 0.1 "%s"}}, Sfilename
+        scoreline Sscoreline, 1
+      endif
+    endif ; frame ready
+  endif ; metro trig
+
   endin
 
   instr 3
   ;print p1, p2, p3
-  if p2 > 1.1 then
-    ; write analysis to file
-    Sfilename strget p4
-    Sfilename strcat Sfilename, "_analyze.txt"
-    ilen = lenarray(gkAnalysis)
-    ;print ilen
-    p3 = 1/kr
-    kndx = 0
-    while kndx < ilen do
-      ksig1 = gkAnalysis[kndx][0]
-      ksig2 = gkAnalysis[kndx][1]
-      ksig3 = gkAnalysis[kndx][2]
-      dumpk3 ksig1, ksig2, ksig3, Sfilename, 8, 0
-      kndx += 1
-      ;printk2 kndx
-    od
-  endif
+  ; write analysis to file
+  Sfilename strget p4
+  Sfilename strcat Sfilename, "_analyze.txt"
+  ilen = lenarray(gkAnalysis)
+  Sinfo sprintfk "\ndc %.2f \ncrest %.2f\ncentroid %.2f\nrolloff %.2f\n", 
+                gkAnalysis[0][0],
+                gkAnalysis[0][1],
+                gkAnalysis[0][2],
+                gkAnalysis[0][3]
+  kprint init 0
+  kprint += 1
+  puts Sinfo, kprint
+  printarray gkAnalysis
+  p3 = 1/kr
+  kndx = 0
+  while kndx < ilen do
+    ksig1 = gkAnalysis[kndx][0]
+    ksig2 = gkAnalysis[kndx][1]
+    ksig3 = gkAnalysis[kndx][2]
+    ksig4 = gkAnalysis[kndx][3]
+    dumpk4 ksig1, ksig2, ksig3, ksig4, Sfilename, 8, 0
+    kndx += 1
+  od
   endin
 

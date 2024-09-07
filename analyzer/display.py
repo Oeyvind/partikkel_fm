@@ -32,7 +32,7 @@ get_parameters = f"import {dataset}_parametervalues as p"
 exec(get_parameters)
 
 
-sideband_thresh = 0.7 # ratio of sidebands present (with relation to max number of bands that could be present) for each N-subdiv sidebands
+sideband_thresh = 0.8 # ratio of sidebands present (with relation to max number of bands that could be present) for each N-subdiv sidebands
 
 def get_timbre_analysis(f, sideband_thresh):
     f = open(path+filename, "r")
@@ -40,21 +40,22 @@ def get_timbre_analysis(f, sideband_thresh):
     for line in f.readlines():
         timbre_data.append(line.rstrip('\n').split('\t'))
     dc_amp = timbre_data[0][0]
-    centroid = timbre_data[0][1]
-    crest_global = timbre_data[0][2]
+    crest_global = timbre_data[0][1]
+    centroid = timbre_data[0][2]
+    rolloff = timbre_data[0][3]
     sideband_div = 1
     for i in range(1,len(timbre_data)):
         if float(timbre_data[i][0]) > float(timbre_data[i][1])*sideband_thresh:
             sideband_div = i
     crest_sideband = timbre_data[sideband_div][2]
-    return sideband_div, crest_sideband, dc_amp, centroid, crest_global
+    return sideband_div, crest_sideband, dc_amp, crest_global, centroid, rolloff
 
 # get data
 if mode == "saved":
     data = np.load(f"{dataset}_data_array.npy")
 else:
     path = f"./data/"
-    data = np.ndarray([len(p.graindurs), len(p.modindices), len(p.delays), len(p.grainpitches), 5])
+    data = np.ndarray([len(p.graindurs), len(p.modindices), len(p.delays), len(p.grainpitches), 6])
     filenum = 0
     numfiles = len(p.graindurs) * len(p.modindices) * len(p.delays) * len(p.grainpitches)
     for i in range(len(p.graindurs)):
@@ -180,15 +181,18 @@ def update(val):
     sideband_div = np.transpose(displaydata[:,:,0]).ravel() 
     sideband_crests = np.transpose(displaydata[:,:,1]).ravel()
     dc_amp = np.transpose(displaydata[:,:,2]).ravel()
-    centroid = np.transpose(displaydata[:,:,3]).ravel()
-    crest = np.transpose(displaydata[:,:,4]).ravel()
+    crest = np.transpose(displaydata[:,:,3]).ravel()
+    centroid = np.transpose(displaydata[:,:,4]).ravel()
+    rolloff = np.transpose(displaydata[:,:,5]).ravel()
     width = (x_parm[1]-x_parm[0])*0.9
     depth = (y_parm[1]-y_parm[0])*0.9
     colors = np.zeros((len(crest),4))
-    red = ((crest/max(crest))*0.9)+0.1# (np.power(abs(dc_amp)/max(np.abs(dc_amp)),2)*0.9)+0.1
+    #red = (np.power(crest/max(crest),3)*0.9)+0.1# 
+    red = (np.power(abs(dc_amp)/max(np.abs(dc_amp)),5)*0.8)
     #red = (np.power(abs(dc_amp)/max(np.abs(dc_amp)),1)*0.9)+0.1
-    blue = (np.power((sideband_crests/max(sideband_crests)),1)*0.9)+0.1
-    green = (np.power(centroid/max(centroid),2)*0.2)+0.1 
+    blue = (np.power((sideband_crests/max(sideband_crests)),2)*0.9)+0.1
+    #green = (np.power(centroid/max(centroid),2)*0.9)+0.1 
+    green = (np.power(rolloff/max(rolloff),3)*0.7)+0.1 
     colors[:,0] = red
     colors[:,1] = green #0.2 # 
     colors[:,2] = blue
