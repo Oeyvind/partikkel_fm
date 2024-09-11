@@ -32,22 +32,26 @@ get_parameters = f"import {dataset}_parametervalues as p"
 exec(get_parameters)
 
 
-sideband_thresh = 0.8 # ratio of sidebands present (with relation to max number of bands that could be present) for each N-subdiv sidebands
+sideband_thresh = 0.7 # ratio of sidebands present (with relation to max number of bands that could be present) for each N-subdiv sidebands
 
-def get_timbre_analysis(f, sideband_thresh):
+def get_timbre_analysis(filename, sideband_thresh):
     f = open(path+filename, "r")
     timbre_data = []
     for line in f.readlines():
         timbre_data.append(line.rstrip('\n').split('\t'))
-    dc_amp = timbre_data[0][0]
-    crest_global = timbre_data[0][1]
-    centroid = timbre_data[0][2]
-    rolloff = timbre_data[0][3]
+    #print(filename)
+    #print(timbre_data)
+    dc_amp = float(timbre_data[0][0])
+    crest_global = float(timbre_data[0][1])
+    centroid = float(timbre_data[0][2])
+    rolloff = float(timbre_data[0][3])
     sideband_div = 1
     for i in range(1,len(timbre_data)):
         if float(timbre_data[i][0]) > float(timbre_data[i][1])*sideband_thresh:
             sideband_div = i
-    crest_sideband = timbre_data[sideband_div][2]
+    crest_sideband = float(timbre_data[sideband_div][2])
+    if crest_sideband < 1:
+        sideband_div = -1
     return sideband_div, crest_sideband, dc_amp, crest_global, centroid, rolloff
 
 # get data
@@ -159,7 +163,7 @@ ax_legend.add_artist(rect_blue)
 ax_legend.text(0.15, 0.9, "Sideband crest", dict(size=8))
 rect_green = Rectangle((0, 0.7), 0.1, 0.1, color='green')
 ax_legend.add_artist(rect_green)
-ax_legend.text(0.15, 0.7, "Centroid", dict(size=8))
+ax_legend.text(0.15, 0.7, "Rolloff", dict(size=8))
 rect_red = Rectangle((0, 0.5), 0.1, 0.1, color='red')
 ax_legend.add_artist(rect_red)
 ax_legend.text(0.15, 0.5, "DC component", dict(size=8))
@@ -184,15 +188,13 @@ def update(val):
     crest = np.transpose(displaydata[:,:,3]).ravel()
     centroid = np.transpose(displaydata[:,:,4]).ravel()
     rolloff = np.transpose(displaydata[:,:,5]).ravel()
+    #rolloff /= np.power(sideband_div,0.2) #scale according to number of sidebands
     width = (x_parm[1]-x_parm[0])*0.9
     depth = (y_parm[1]-y_parm[0])*0.9
     colors = np.zeros((len(crest),4))
-    #red = (np.power(crest/max(crest),3)*0.9)+0.1# 
-    red = (np.power(abs(dc_amp)/max(np.abs(dc_amp)),5)*0.8)
-    #red = (np.power(abs(dc_amp)/max(np.abs(dc_amp)),1)*0.9)+0.1
-    blue = (np.power((sideband_crests/max(sideband_crests)),2)*0.9)+0.1
-    #green = (np.power(centroid/max(centroid),2)*0.9)+0.1 
-    green = (np.power(rolloff/max(rolloff),3)*0.7)+0.1 
+    red = np.power(dc_amp, 0.5) # we use DC relative to sum amp, so it is already normalized
+    blue = (np.power((sideband_crests/max(sideband_crests)),1)*0.9)+0.1
+    green = np.power(rolloff, 0.3) # rollof is relative to sum amp, so it is already normalized
     colors[:,0] = red
     colors[:,1] = green #0.2 # 
     colors[:,2] = blue

@@ -134,7 +134,7 @@ instr 2
   ioctaves = 2
   imax_sidebands = 10 ; check sideband amplitudes at subdivisions of the fundamental frequency for all subdivisions from 1 to N
   ; report if *all* ((more than 70%) of the frequency bands have an amplitude higher than a threshold
-  isideband_threshold = 1.2 ; sideband amplitude threshold, relative to average bin amp in sideband 
+  isideband_threshold = 1 ; sideband amplitude threshold, relative to average bin amp in sideband 
   
   ; array holds 
   ; number of sidebands found, expected number of sidebands, and average crest values for each N-subdivision present 
@@ -146,7 +146,7 @@ instr 2
   kdiv init 99 
   kwritefile init 0
   kBand[] init 1 ; just need it present at init, size will change for each subdiv 
-
+  
   ; trigger analysis
   kmetro metro 1, 0.5 ; after 0.5 and 1.5 secs
   if kmetro > 0 then
@@ -169,14 +169,12 @@ instr 2
     endif
   
     if kframe_ready > 0 then 
-      kMags[0] = 0 ; workaround for DC offset in crest calculation
-      kMags[1] = 0 ; also zero the seconde bin, since there will be a leak from the first one 
+      kMags = abs(kMags)  ; ALL POSITIVE AMPS
       ksum_amp = sumarray(kMags)
       kavg_amp_0 = ksum_amp/ibins
       kmax_amp_0,kdx maxarray kMags
-      kDC_relative divz kDC, kavg_amp_0, -1 ; dc relative to overall amp
-      
-      kcrest divz kmax_amp_0, kavg_amp_0, -1 ; spectral crest
+      kDC_relative divz abs(kDC), ksum_amp, -1 ; dc relative to sum of amplitudes
+      kDC_relative = abs(kDC_relative)
 
       kcentroid = 0
       kndx_moments = 0
@@ -186,6 +184,7 @@ instr 2
       od
       kcentroid /= (kavg_amp_0*ibins)
 
+      ; standard spectral rolloff (has problems for this application becasue sidebands have integer relations to the fundamental)
       irolloff_thresh = 0.95
       krolloff_fq = 0
       krolloff_amp = 0
@@ -197,6 +196,18 @@ instr 2
         endif
         kndx_moments += 1
       od
+
+      ; custom spectral rolloff method
+      ; measure how much of the energy resides in the high frequencies
+      ; so... compare amp in the high frequency band with the overall amp for the sound
+      irolloff_cutoff = icps*4 ;  energy in the band oabove 2 octaves above the fundamental
+      irolloff_firstbin = round(irolloff_cutoff/ihz_per_bin)
+      kHighband[] init ibins - irolloff_firstbin
+      kHighband[] slicearray kMags, irolloff_firstbin, ibins
+      khigh_amp sumarray kHighband
+      krolloff_2khz = khigh_amp/ksum_amp ; relative to sum of amplitudes
+
+
       ;printk2 krolloff_fq, 20
 
       /*
@@ -234,11 +245,14 @@ instr 2
       ;kflatness = kflatness^0.3
       printk2 kflatness, 10
       */
+      kMags[0] = 0 ; workaround for DC offset in crest calculation
+      kMags[1] = 0 ; also zero the second bin, since there will be a leak from the first one 
+      kcrest divz kmax_amp_0, kavg_amp_0, -1 ; spectral crest
 
       kAnalysis[0][0] = kDC_relative
       kAnalysis[0][1] = kcrest
       kAnalysis[0][2] = kcentroid
-      kAnalysis[0][3] = krolloff_fq
+      kAnalysis[0][3] = krolloff_2khz
 
       while kdiv <= imax_sidebands do 
         ;Sbin sprintfk "*** *** subdiv: %i", kdiv
@@ -272,14 +286,15 @@ instr 2
             ;printarray kBand
           rireturn
           kavg_amp = sumarray(kBand)/(kbins)
-          ;Sbininfo_avg sprintfk "    avg amp in band:%f,", kavg_amp
-          ;puts Sbininfo_avg, kbin
+          ;Sbandinfo sprintfk "div %i, fq %i, band amp:%.2f, bin amp %.2f, crest %.2f", kdiv, kcps, kavg_amp, kMags[kbin], kMags[kbin]/kavg_amp
+          ;puts Sbandinfo, kbin
           ksideband_crest += kMags[kbin]/kavg_amp
           ksideband_present = kMags[kbin]/kavg_amp > isideband_threshold ? 1 : 0
           ksideband_counter += ksideband_present
         od
         kAnalysis[kdiv][0] = ksideband_counter ; number of sidebands found
         kAnalysis[kdiv][2] = ksideband_crest ; spectral crest within this sideband
+        kAnalysis[kdiv][3] = ksideband_crest/kexpected_num_sidebands ; spectral crest within this sideband divided by how many bands max in this div
       kdiv +=1
       od
 
