@@ -30,3 +30,4 @@ python display.py dataset mode
   - saved will just read the data array from file
   - both modes will display the 3d plot (use analyze the first run, and then saved for later runs where the data has not changed)
 
+the file run
