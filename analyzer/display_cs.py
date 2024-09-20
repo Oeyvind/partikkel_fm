@@ -21,9 +21,15 @@ dataset = sys.argv[1]
 
 # optional argument to load previous analysis from file 
 mode = "analyze"
+displaypreset = 1
+z_zoom = 10
 if len(sys.argv) > 2:
     if sys.argv[2] == "saved":
         mode = "saved"
+    if len(sys.argv) > 3:
+        displaypreset = int(sys.argv[3])
+    if len(sys.argv) > 4:
+        z_zoom = int(sys.argv[4])
 
 # read test parameters from file 'dataset_parametervalues.py'
 # this should create list objects:
@@ -87,7 +93,7 @@ parms = {"graindur": [p.graindurs,0],
          "grain pitch": [p.grainpitches,3]}
 
 # it works best if the parameters displayed on X and Y axis are linearly spaced
-displaypreset = 1
+
 if displaypreset == 1:
     display_x = "graindur"
     display_y = "mod index"
@@ -230,7 +236,7 @@ def update(val):
     ax.set_xlabel(display_x) 
     ax.set_ylabel(display_y)
     ax.set_zlabel("sidebands")
-    ax.set_zlim(0,10)
+    ax.set_zlim(0,z_zoom)
     ax.set_title('Sidebands analysis')
     # sliders
     ax_slider1_val.clear()
@@ -238,7 +244,10 @@ def update(val):
     ax_slider1_val.text(0.1, 0.1, str(parms[slider1_parm][0][slider1.val]))
     ax_slider2_val.clear()
     ax_slider2_val.axis('off')
-    ax_slider2_val.text(0.1, 0.1, str((parms[slider2_parm][0][slider2.val]/400)*slider3.val))
+    if displaypreset == 2:
+        ax_slider2_val.text(0.1, 0.1, str(parms[slider2_parm][0][slider2.val]))
+    else:
+        ax_slider2_val.text(0.1, 0.1, str(int((parms[slider2_parm][0][slider2.val]/400)*slider3.val)))
     # navigator
     navigator_colors = np.ndarray((len(x_parm),len(y_parm),4))
     for i in range(len(colors)):
@@ -251,6 +260,10 @@ def update(val):
 update(1)
 def set_cps(val):
     cs.setControlChannel("grainrate", val)
+    ax_slider2_val.clear()
+    ax_slider2_val.axis('off')
+    ax_slider2_val.text(0.1, 0.1, str(int((parms[slider2_parm][0][slider2.val]/400)*slider3.val)))
+    fig.canvas.draw_idle()
 
 def on_enter(event):
   if (event.inaxes == ax_navigator):
@@ -266,21 +279,35 @@ def on_move(event):
     if (event.inaxes == ax_navigator):
         x = round(event.xdata)
         y = len(parms[display_y][0])-round(event.ydata)-1
-        #print('graindur', parms[display_x][0][x], 'modindex', parms[display_y][0][y])
-        cs.setControlChannel("modindex", parms[display_y][0][y])
-        cs.setControlChannel("graindur", parms[display_x][0][x])
-        cs.setControlChannel("delaytime", parms[slider1_parm][0][slider1.val])
-        cs.setControlChannel("grainpitch", (parms[slider2_parm][0][slider2.val]/400)*slider3.val)
-        #print("graindur", cs.controlChannel("graindur")[0], "modindex", cs.controlChannel("modindex")[0], "delay", cs.controlChannel("delay")[0], "gr.pitch", cs.controlChannel("grainpitch")[0])
-        #print("grainpitch", cs.controlChannel("grainpitch")[0])
+        if displaypreset == 1:
+            cs.setControlChannel("graindur", parms[display_x][0][x])
+            cs.setControlChannel("modindex", parms[display_y][0][y])
+            cs.setControlChannel("delaytime", parms[slider1_parm][0][slider1.val])
+            cs.setControlChannel("grainpitch", (parms[slider2_parm][0][slider2.val]/400)*slider3.val)
+        elif displaypreset == 2:
+            cs.setControlChannel("graindur", parms[slider1_parm][0][slider1.val])
+            cs.setControlChannel("modindex", parms[slider2_parm][0][slider2.val])
+            cs.setControlChannel("delaytime", parms[display_x][0][x])
+            cs.setControlChannel("grainpitch", (parms[display_y][0][y]/400)*slider3.val)
+        elif displaypreset == 3:
+            cs.setControlChannel("graindur", parms[slider1_parm][0][slider1.val])
+            cs.setControlChannel("modindex", parms[display_y][0][y])
+            cs.setControlChannel("delaytime", parms[display_x][0][x])
+            cs.setControlChannel("grainpitch",  (parms[slider2_parm][0][slider2.val]/400)*slider3.val)
 
 def on_click(event):
     if (event.inaxes == ax_navigator):
         x = round(event.xdata)
         y = len(parms[display_y][0])-round(event.ydata)-1
-        # NEEDS FIX for the different displaypresets
-        png_file = f'./data/{dataset}_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider1_data[slider1.val]*1000)}_gp{int(slider2_data[slider2.val])}_cps400_display.png'
-        wav_file = f'./data/{dataset}_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider1_data[slider1.val]*1000)}_gp{int(slider2_data[slider2.val])}_cps400_partikl.wav'
+        if displaypreset == 1:
+            png_file = f'./data/{dataset}_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider1_data[slider1.val]*1000)}_gp{int(slider2_data[slider2.val])}_cps400_display.png'
+            wav_file = f'./data/{dataset}_gd{int(parms[display_x][0][x]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(slider1_data[slider1.val]*1000)}_gp{int(slider2_data[slider2.val])}_cps400_partikl.wav'
+        elif displaypreset == 2:
+            png_file = f'./data/{dataset}_gd{int(slider1_data[slider1.val]*1000)}_ndx{int(slider2_data[slider2.val]*1000)}_dly{int(parms[display_x][0][x]*1000)}_gp{int(parms[display_y][0][y])}_cps400_display.png'
+            wav_file = f'./data/{dataset}_gd{int(slider1_data[slider1.val]*1000)}_ndx{int(slider2_data[slider2.val]*1000)}_dly{int(parms[display_x][0][x]*1000)}_gp{int(parms[display_y][0][y])}_cps400_partikl.wav'
+        elif displaypreset == 3:
+            png_file = f'./data/{dataset}_gd{int(slider1_data[slider1.val]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(parms[display_x][0][x]*1000)}_gp{int(slider2_data[slider2.val])}_cps400_display.png'
+            wav_file = f'./data/{dataset}_gd{int(slider1_data[slider1.val]*1000)}_ndx{int(parms[display_y][0][y]*1000)}_dly{int(parms[display_x][0][x]*1000)}_gp{int(slider2_data[slider2.val])}_cps400_partikl.wav'
         print(png_file)
         if not os.path.isfile(png_file):
             partikkelscore = png_file[:-11]+'analyze.sco'
