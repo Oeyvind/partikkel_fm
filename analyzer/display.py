@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import CheckButtons, Slider
 from  matplotlib.patches import Rectangle
 from matplotlib.backend_bases import MouseButton
+import cv2
 import subprocess
 import os
 from threading import Thread
@@ -22,6 +23,8 @@ dataset = sys.argv[1]
 mode = "analyze"
 displaypreset = 1
 z_zoom = 10
+write_images = 0 # save images from navigator 
+
 if len(sys.argv) > 2:
     if sys.argv[2] == "saved":
         mode = "saved"
@@ -225,7 +228,30 @@ def update(val):
     for i in range(len(colors)):
         navigator_colors[i%len(x_parm),int(i/len(x_parm))] = colors[i]
     navigator_colors = np.rot90(navigator_colors)
+    iscale = 40
+    navigator_colors = cv2.resize(navigator_colors, (len(x_parm)*iscale,len(y_parm)*iscale),interpolation = cv2.INTER_NEAREST)
     ax_navigator.imshow(navigator_colors) 
+    # sidebands in navigator
+    navigator_sidebands = np.ndarray((len(x_parm)*iscale,len(y_parm)*iscale,4))
+    i = 0
+    for x in range(len(x_parm)):
+        for y in range(len(y_parm)):
+            numbands = int(sideband_div[i])
+            if numbands%2 == 0:
+                bandcolor = (0,0,0,1)
+            else:
+                bandcolor = (1,1,1,1)
+            navigator_sidebands = cv2.rectangle(navigator_sidebands, (int((x*iscale)+numbands/2),int((y*iscale)+numbands/2)), (int((x*iscale)+iscale-numbands),int((y*iscale)+iscale-numbands)), bandcolor, numbands, lineType=cv2.LINE_4)
+            i += 1
+    navigator_sidebands = np.rot90(navigator_sidebands)
+    ax_navigator.imshow(navigator_sidebands) 
+    extent = ax_navigator.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+    #print(extent)
+    extent.update_from_data_y([1.23,2.845])
+    #print(extent)
+    if write_images > 0:
+        figfilename = f"./figexport/navigatorfig_dly{str(int(parms[slider1_parm][0][slider1.val]*1000))}_gp{str(parms[slider2_parm][0][slider2.val])}.png"
+        fig.savefig(figfilename, bbox_inches=extent)
     fig.canvas.draw_idle()
 
 # register the update function with each slider
@@ -233,6 +259,7 @@ slider2.on_changed(update)
 slider1.on_changed(update)
 
 update(1)
+
 def on_move(event):
     if (event.inaxes == ax_navigator):
         x = round(event.xdata)
@@ -272,4 +299,14 @@ binding_id = plt.connect('motion_notify_event', on_move)
 plt.connect('button_press_event', on_click)
 #ax_checkbox.axis('off')
 ax0.axis('off')
+print(len(parms[slider1_parm][0]))
+# to write images of all parameter combinations for navigator
+if write_images > 0:
+    for i in [22,23]:#range(16,len(parms[slider1_parm][0])):
+        for j in range(len(parms[slider2_parm][0])):
+            print(f'saving image {i,j}')
+            slider1.set_val(i)
+            slider2.set_val(j)
+
+
 plt.show()

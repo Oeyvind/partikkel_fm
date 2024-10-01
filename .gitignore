@@ -5,4 +5,5 @@
 score_fm.sco
 score_partikkel.sco
 analyzer/data/*
+analyzer/figexport/*
 analyzer_oscil_fm/data/*
